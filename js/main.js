@@ -26,13 +26,13 @@ function getRandomInclusive (min, max, powNum) {// Результат: числ�
 const getRandomArrayElement = (elements) => elements[getRandomIntInclusive(0, elements.length - 1)];
 
 
-const featuresArr=['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-const photosArr=['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
+const FEATURES_ARRAY=['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+const PHOTOS_ARRAY=['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
-const typeArr=['palace', 'flat', 'house', 'bungalow','hotel'];
-const checkinArr=['12:00', '13:00','14:00'];
-const checkoutArr=['12:00', '13:00','14:00'];
+const TYPES_ARRAY=['palace', 'flat', 'house', 'bungalow','hotel'];
+const CHECKIN_ARRAY=['12:00', '13:00','14:00'];
+const CHECKOUT_ARRAY=['12:00', '13:00','14:00'];
 
 //Возвращает массив строк - массив случайной длины из значений (значения передаются в массиве - параметр checkArr)
 const getRendomLengthArray= (checkArr) => {
@@ -53,22 +53,22 @@ const  getObjForAdvert = (a)=> {
       title: 'Информация об объявлении',
       address: `${location.lat}, ${location.lng}`,
       price: getRandomIntInclusive(1000,10000), //диапазон задан самостоятельно
-      type: getRandomArrayElement(typeArr),
+      type: getRandomArrayElement(TYPES_ARRAY),
       rooms:getRandomIntInclusive(1,5), //диапазон задан самостоятельно
       guests:getRandomIntInclusive(1,10), //диапазон задан самостоятельно
-      checkin:getRandomArrayElement(checkinArr),
-      checkout: getRandomArrayElement(checkoutArr),
-      features: getRendomLengthArray(featuresArr),
+      checkin:getRandomArrayElement(CHECKIN_ARRAY),
+      checkout: getRandomArrayElement(CHECKOUT_ARRAY),
+      features: getRendomLengthArray(FEATURES_ARRAY),
       description:'Помещение отличное',
-      photos: getRendomLengthArray(photosArr)
+      photos: getRendomLengthArray(PHOTOS_ARRAY)
     },
     author:{avatar: `img/avatars/user${a<10 ?`0${a}`:a}.png`}, //значение a будет задаваться при генерации
     location
-
   };};
 
+const  ADVERTS_COUNT=10;
 //генерируем массив. getObjForGenerationArr передаем индекс+1 для определения avatar
-const AdvertArray = Array.from({length: 10}, (v,i)=>getObjForAdvert(i+1));
+const ADVERTS_ARRAY = Array.from({length: ADVERTS_COUNT}, (v,i)=>getObjForAdvert(i+1));
 
 // eslint-disable-next-line no-console
-console.log(AdvertArray);
+console.log(ADVERTS_ARRAY);
