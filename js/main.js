@@ -35,45 +35,40 @@ const checkinArr=['12:00', '13:00','14:00'];
 const checkoutArr=['12:00', '13:00','14:00'];
 
 //Возвращает массив строк - массив случайной длины из значений (значения передаются в массиве - параметр checkArr)
-const arrayStr= (checkArr) => {
+const getRendomLengthArray= (checkArr) => {
   const minVal = getRandomIntInclusive(0, Math.ceil(checkArr.length / 2));
   const maxVal = getRandomIntInclusive(minVal + 1, checkArr.length);
 
-  return   Array.from(new Set(checkArr.slice(minVal,maxVal)));
+  return   Array.from(new Set(checkArr.slice(minVal,maxVal))); //новый массив без повторов
 };
 
-//функция, которая возвращает 1 экземпляр объекта, в дальнейшем будет "размножаться" в массиве
-const  getObjData = (a)=> (
-
-  {
+//функция, которая возвращает один объект для описания объявления (advertisement)
+const  getObjForAdvert = (a)=> {
+  const  location= {
+    lat:getRandomInclusive(35.65000 , 35.70000,5),
+    lng:getRandomInclusive(139.70000, 139.80000,5)
+  };
+  return {
     offer:{
       title: 'Информация об объявлении',
-      address: '',//Object.keys(this.location).join(', '), //ПЕРЕОПРЕДЕЛЯЕМ после генерации (ВОПРОС: есть ли вариант заполнять сразу?)
+      address: `${location.lat}, ${location.lng}`,
       price: getRandomIntInclusive(1000,10000), //диапазон задан самостоятельно
       type: getRandomArrayElement(typeArr),
       rooms:getRandomIntInclusive(1,5), //диапазон задан самостоятельно
       guests:getRandomIntInclusive(1,10), //диапазон задан самостоятельно
       checkin:getRandomArrayElement(checkinArr),
       checkout: getRandomArrayElement(checkoutArr),
-      features: `${arrayStr(featuresArr)}`,//должен быть массив случайной длины из значений НЕ ПОЛУЧАЕТСЯ вернуть массив, только строка
+      features: getRendomLengthArray(featuresArr),
       description:'Помещение отличное',
-      photos: `${arrayStr(photosArr)}`//должен быть массив случайной длины из значений НЕ ПОЛУЧАЕТСЯ вернуть массив, только строка
+      photos: getRendomLengthArray(photosArr)
     },
     author:{avatar: `img/avatars/user${a<10 ?`0${a}`:a}.png`}, //значение a будет задаваться при генерации
+    location
 
-    location: {
-      lat:getRandomInclusive(35.65000 , 35.70000,5),
-      lng:getRandomInclusive(139.70000, 139.80000,5)
-    }
-  });
+  };};
 
-//генерируем массив. getObjData передаем индекс+1 для определения avatar
-const author = Array.from({length: 2}, (v,i)=>getObjData(i+1));
+//генерируем массив. getObjForGenerationArr передаем индекс+1 для определения avatar
+const AdvertArray = Array.from({length: 10}, (v,i)=>getObjForAdvert(i+1));
 
-//переопределяем значение address, оно должно быть равно данным из объекта location
-for (let i=0; i<author.length;i++) {
-  author[i].offer.address = Object.values(author[i].location).join(', ');
-}// eslint-disable-next-line no-console
-console.log(author);
-
-
+// eslint-disable-next-line no-console
+console.log(AdvertArray);
