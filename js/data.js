@@ -12,6 +12,13 @@ const TYPES_ARRAY=['palace', 'flat', 'house', 'bungalow','hotel'];
 const CHECKIN_ARRAY=['12:00', '13:00','14:00'];
 const CHECKOUT_ARRAY=['12:00', '13:00','14:00'];
 
+const OFFER_TYPE_VALUE = {
+  flat:'Квартира',
+  bungalow:'Бунгало',
+  house:'Дом',
+  palace:'Дворец',
+  hotel:'Отель'
+};
 
 //функция, которая возвращает один объект для описания объявления (advertisement)
 const  getObjForAdvert = (a)=> {
@@ -41,4 +48,4 @@ const  ADVERTS_COUNT=10;
 //генерируем массив. getObjForGenerationArr передаем индекс+1 для определения avatar
 const createAdverts = () => Array.from({length: ADVERTS_COUNT}, (v,i)=>getObjForAdvert(i+1));
 
-export{createAdverts};
+export{createAdverts,OFFER_TYPE_VALUE};
