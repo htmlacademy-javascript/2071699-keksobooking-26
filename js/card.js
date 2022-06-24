@@ -44,7 +44,7 @@ similarAdvert1.forEach(({offer,author}) => {
     const advertImgCloneElement=advertImgElement.cloneNode();
     advertImgCloneElement.src = el;
     advertContainerImgElement.appendChild(advertImgCloneElement);
-  })
+  });
   //пустой <img> из шаблона скроем
   advertImgElement.classList.add('hidden');
 
