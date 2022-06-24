@@ -1,8 +1,9 @@
-import  './data.js';
+import { createAdverts } from './data.js';
+
 
 // eslint-disable-next-line no-console
-/*console.log(
+console.log(
   createAdverts()
-);*/
+);
 
 import './card.js';
