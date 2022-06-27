@@ -1,4 +1,5 @@
 import  './form-status.js';
+import  './form-validate.js';
 import { createAdverts } from './data.js';
 
 

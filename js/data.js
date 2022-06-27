@@ -2,14 +2,22 @@ import {
   getRandomIntInclusive,
   getRandomInclusive,
   getRandomArrayElement,
-  getRendomLengthArray
+  getRendomLengthArray,
 } from './util.js';
 
-
-const FEATURES_ARRAY = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-const PHOTOS_ARRAY = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
+const FEATURES_ARRAY = [
+  'wifi',
+  'dishwasher',
+  'parking',
+  'washer',
+  'elevator',
+  'conditioner',
+];
+const PHOTOS_ARRAY = [
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
+];
 const TYPES_ARRAY = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const CHECKIN_ARRAY = ['12:00', '13:00', '14:00'];
 const CHECKOUT_ARRAY = ['12:00', '13:00', '14:00'];
@@ -19,14 +27,14 @@ const OFFER_TYPE_VALUE = {
   bungalow: 'Бунгало',
   house: 'Дом',
   palace: 'Дворец',
-  hotel: 'Отель'
+  hotel: 'Отель',
 };
 
 //функция, которая возвращает один объект для описания объявления (advertisement)
 const getObjForAdvert = (a) => {
   const location = {
-    lat: getRandomInclusive(35.65000, 35.70000, 5),
-    lng: getRandomInclusive(139.70000, 139.80000, 5)
+    lat: getRandomInclusive(35.65, 35.7, 5),
+    lng: getRandomInclusive(139.7, 139.8, 5),
   };
   return {
     offer: {
@@ -40,15 +48,16 @@ const getObjForAdvert = (a) => {
       checkout: getRandomArrayElement(CHECKOUT_ARRAY),
       features: getRendomLengthArray(FEATURES_ARRAY),
       description: 'Помещение отличное',
-      photos: getRendomLengthArray(PHOTOS_ARRAY)
+      photos: getRendomLengthArray(PHOTOS_ARRAY),
     },
     author: { avatar: `img/avatars/user${a < 10 ? `0${a}` : a}.png` }, //значение a будет задаваться при генерации
-    location
+    location,
   };
 };
 
 const ADVERTS_COUNT = 10;
 //генерируем массив. getObjForGenerationArr передаем индекс+1 для определения avatar
-const createAdverts = () => Array.from({ length: ADVERTS_COUNT }, (v, i) => getObjForAdvert(i + 1));
+const createAdverts = () =>
+  Array.from({ length: ADVERTS_COUNT }, (v, i) => getObjForAdvert(i + 1));
 
 export { createAdverts, OFFER_TYPE_VALUE };
