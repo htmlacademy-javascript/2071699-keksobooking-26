@@ -1015,3 +1015,12 @@ fieldset {
   color: #ff5635;
   width: 200%;
 }
+
+.ad-form__element--type .pristine-error {
+  width: 93%;
+}
+
+.ad-form__element--capacity .pristine-error {
+  margin-left: -100%;
+}
+

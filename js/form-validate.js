@@ -7,7 +7,7 @@ const pristine = new Pristine(
     classTo: 'ad-form__element',
     errorTextParent: 'ad-form__element',
     errorTextTag: 'div'
-  }, false);
+  });
 
 //для Количество комнат и количество мест отдельная проверка
 const roomFieldElement = formElement.querySelector('[name="rooms"]');
@@ -47,7 +47,17 @@ const validatePrice = () => priceElement.value >= OFFER_TYPE_OPTION[offerTypeEle
 const getpriceOptionErrorMessage = () =>
   `Минимальное значение для типа жилья "${OFFER_TYPE_VALUE[offerTypeElement.value]}" — ${OFFER_TYPE_OPTION[offerTypeElement.value]}`;
 
+capacityFieldElement.addEventListener('change', () => {
+  pristine.validate([capacityFieldElement, roomFieldElement]);
+});
+
+roomFieldElement.addEventListener('change', () => {
+  pristine.validate([capacityFieldElement, roomFieldElement]);
+});
+
+
 pristine.addValidator(roomFieldElement, validateRoom, getroomOptionErrorMessage);
+pristine.addValidator(capacityFieldElement, validateRoom, getroomOptionErrorMessage);
 pristine.addValidator(offerTypeElement, validatePrice, getpriceOptionErrorMessage);
 
 
