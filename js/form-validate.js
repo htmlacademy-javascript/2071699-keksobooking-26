@@ -6,10 +6,8 @@ const pristine = new Pristine(
   {
     classTo: 'ad-form__element',
     errorTextParent: 'ad-form__element',
-    errorTextTag: 'span',
-  },
-  false
-);
+    errorTextTag: 'div'
+  }, false);
 
 //для Количество комнат и количество мест отдельная проверка
 const roomFieldElement = formElement.querySelector('[name="rooms"]');
@@ -21,12 +19,12 @@ const priceElement = formElement.querySelector('[name="price"]');
 const timeinElement = formElement.querySelector('[name="timein"]');
 const timeoutElement = formElement.querySelector('[name="timeout"]');
 
+
 //функция, которая проверяет, что кол-во гостей, соответсвует заданному количеству комнат
-const validateRoom = () =>
-  ROOM_OPTION[roomFieldElement.value].includes(capacityFieldElement.value);
+const validateRoom = () => ROOM_OPTION[roomFieldElement[roomFieldElement.selectedIndex].text].includes(capacityFieldElement[capacityFieldElement.selectedIndex].text);
 //функция, которая генерирует текст ошибки
 const getroomOptionErrorMessage = () =>
-  `Если выбрано ${roomFieldElement.value}, то в поле "Количество мест" можно указать: ${ROOM_OPTION[roomFieldElement.value].join(' или ')}`;
+  `Если выбрано ${roomFieldElement[roomFieldElement.selectedIndex].text}, то в поле "Количество мест" можно указать: ${ROOM_OPTION[roomFieldElement[roomFieldElement.selectedIndex].text].join(' или ')}`;
 //переопределяем значение поля Цена за ночь. в зависимости от выбранного значения в поле Тип жилья
 offerTypeElement.addEventListener('change', (evt) => {
   evt.preventDefault();
@@ -51,6 +49,7 @@ const getpriceOptionErrorMessage = () =>
 
 pristine.addValidator(roomFieldElement, validateRoom, getroomOptionErrorMessage);
 pristine.addValidator(offerTypeElement, validatePrice, getpriceOptionErrorMessage);
+
 
 formElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
