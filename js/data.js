@@ -51,4 +51,4 @@ const ADVERTS_COUNT = 10;
 const createAdverts = () =>
   Array.from({ length: ADVERTS_COUNT }, (v, i) => getObjForAdvert(i + 1));
 
-export { createAdverts};
+export { createAdverts };

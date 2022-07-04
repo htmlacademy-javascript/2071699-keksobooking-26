@@ -16,3 +16,4 @@ globals:
 
 extends:
   "htmlacademy/vanilla"
+  "prettier"

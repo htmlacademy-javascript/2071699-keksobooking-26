@@ -8,20 +8,18 @@ import {
 } from './form-status.js';
 
 const addressElement = document.querySelector('[name="address"]');
-const LOCATION_TOKYO = {
+const LocationTokyo = {
   lat: 35.6895,
   lng: 139.692
 };
-addressElement.value = Object.values(LOCATION_TOKYO).join(', ');
-
-//const arrr = https://26.javascript.pages.academy/keksobooking/data
+addressElement.value = `${LocationTokyo.lat}, ${LocationTokyo.lng}`;
 
 const map = L.map('map-canvas').on('load', () => {
   //переход страницы в активное состояние после инициализации карты
   setFormActive(formElement, CLASS_NAME_DISABLED_FORM, fieldsetElement);
   setFormActive(mapFormElement, CLASS_NAME_DISABLED_MAP, mapFiltersElement);
 })
-  .setView(LOCATION_TOKYO, 12);
+  .setView(LocationTokyo, 12);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -37,7 +35,7 @@ const mainPinIcon = L.icon({
 });
 
 const mainPinMarker = L.marker(
-  LOCATION_TOKYO,
+  LocationTokyo,
   {
     draggable: true,
     icon: mainPinIcon
@@ -49,9 +47,9 @@ mainPinMarker.addTo(map);
 
 
 mainPinMarker.on('moveend', (evt) => {
-  addressElement.value = Object.entries(evt.target.getLatLng())
-    .map((objItem) => objItem[1].toFixed(5))
-    .join(', ');
+  const mainMarkerLat = evt.target.getLatLng().lat.toFixed(5);
+  const mainMarkerLng = evt.target.getLatLng().lng.toFixed(5);
+  addressElement.value = `${mainMarkerLat},${mainMarkerLng}`;
 
 });
 
@@ -67,9 +65,9 @@ const createMarker = ({ location, offer, author }) => {
     lat: location.lat,
     lng: location.lng
   },
-  {
-    icon: customPinIcon
-  }
+    {
+      icon: customPinIcon
+    }
   );
   marker.addTo(map)
     .bindPopup(createCustomPopup({ offer, author }));

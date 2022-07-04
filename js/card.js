@@ -1,5 +1,5 @@
 
-const OFFER_TYPE_VALUE = {
+const offerTypeValue = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
   house: 'Дом',
@@ -17,8 +17,8 @@ const createCustomPopup = ({ offer, author }) => {
   //если цена не задана, то текст = '' (в дальнейшем скроем)
   advertElement.querySelector('.popup__text--price').textContent = offer.price ? `${offer.price} ₽/ночь` : '';
 
-  //В type  выводим значение по ключу из OFFER_TYPE_VALUE (в файле data.js)
-  advertElement.querySelector('.popup__type').textContent = OFFER_TYPE_VALUE[offer.type];
+  //В type  выводим значение по ключу из offerTypeValue (в файле data.js)
+  advertElement.querySelector('.popup__type').textContent = offerTypeValue[offer.type];
 
   //если задано кол-во комнат И гостей, то выводим строку иначе пусто (в дальнейшем скроем)
   advertElement.querySelector('.popup__text--capacity').textContent =
@@ -53,10 +53,12 @@ const createCustomPopup = ({ offer, author }) => {
   //Если фото жилья нет, то клоны выше не создадуться и соответсвенной фоторгафий не будет, поэтому эту ситуацию здесь обрабатывать уже не нужно
   const itemsAdvert = advertElement.children;
   for (let i = 0; i < itemsAdvert.length; i++) {
+    const itemsText = itemsAdvert[i].textContent;
+    const itemsImg = itemsAdvert[i].getAttribute('src');
     //Если у элемента не указан ни текст ни изображение. то такой элемент скрываем
-    if (itemsAdvert[i].textContent === '' && itemsAdvert[i].getAttribute('src') === '') { itemsAdvert[i].classList.add('hidden'); }
+    if (itemsText === '' && itemsImg === '') { itemsAdvert[i].classList.add('hidden'); }
   }
   return advertElement;
 };
 
-export { OFFER_TYPE_VALUE, createCustomPopup };
+export { offerTypeValue, createCustomPopup };

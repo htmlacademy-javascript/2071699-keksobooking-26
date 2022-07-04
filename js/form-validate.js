@@ -1,5 +1,5 @@
 import { formElement } from './form-status.js';
-import { OFFER_TYPE_VALUE } from './card.js';
+import { offerTypeValue } from './card.js';
 const pristine = new Pristine(
   formElement,
   {
@@ -27,7 +27,7 @@ const ROOM_OPTION = {
   '3 комнаты': ['для 3 гостей', 'для 2 гостей', 'для 1 гостя'],
   '100 комнат': ['не для гостей']
 };
-const OFFER_TYPE_OPTION = {
+const OfferTypeOption = {
   flat: 1000,
   bungalow: 0,
   house: 5000,
@@ -51,8 +51,8 @@ const getroomOptionErrorMessage = () =>
   `Если выбрано ${roomFieldElement[roomFieldElement.selectedIndex].text}, то в поле "Количество мест" можно указать: ${ROOM_OPTION[roomFieldElement[roomFieldElement.selectedIndex].text].join(' или ')}`;
 //переопределяем значение поля Цена за ночь. в зависимости от выбранного значения в поле Тип жилья
 offerTypeElement.addEventListener('change', () => {
-  priceElement.placeholder = OFFER_TYPE_OPTION[offerTypeElement.value];
-  priceElement.min = OFFER_TYPE_OPTION[offerTypeElement.value];
+  priceElement.placeholder = OfferTypeOption[offerTypeElement.value];
+  priceElement.min = OfferTypeOption[offerTypeElement.value];
 
   pristine.validate([priceElement, offerTypeElement]);
 }
@@ -76,12 +76,12 @@ timeoutElement.addEventListener('change', () => {
   timeinElement.value = timeoutElement.value;
 });
 //проверка, что цена не ниже допустимой
-const validatePrice = () => priceElement.value >= OFFER_TYPE_OPTION[offerTypeElement.value];
+const validatePrice = () => priceElement.value >= OfferTypeOption[offerTypeElement.value];
 //проверка, что поле с ценой заполнено
 const validateIsNullPrice = () => priceElement.value;
 //Сообщение об ошибке выводится в зависимости от значения в поле цена (пустое или не пустое)
 const getpriceOptionErrorMessage = () => priceElement.value ?
-  `Минимальное значение для типа жилья "${OFFER_TYPE_VALUE[offerTypeElement.value]}" — ${OFFER_TYPE_OPTION[offerTypeElement.value]}`
+  `Минимальное значение для типа жилья "${offerTypeValue[offerTypeElement.value]}" — ${OfferTypeOption[offerTypeElement.value]}`
   : 'Заполните поле Цена за ночь, руб.';
 
 
