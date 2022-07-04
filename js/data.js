@@ -21,28 +21,6 @@ const PHOTOS_ARRAY = [
 const TYPES_ARRAY = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const CHECKIN_ARRAY = ['12:00', '13:00', '14:00'];
 const CHECKOUT_ARRAY = ['12:00', '13:00', '14:00'];
-
-const OFFER_TYPE_VALUE = {
-  flat: 'Квартира',
-  bungalow: 'Бунгало',
-  house: 'Дом',
-  palace: 'Дворец',
-  hotel: 'Отель',
-};
-//при выборе количества комнат вводятся ограничения на допустимые варианты выбора количества гостей
-const ROOM_OPTION = {
-  '1 комната': ['для 1 гостя'],
-  '2 комнаты': ['для 2 гостей', 'для 1 гостя'],
-  '3 комнаты': ['для 3 гостей', 'для 2 гостей', 'для 1 гостя'],
-  '100 комнат': ['не для гостей']
-};
-const OFFER_TYPE_OPTION = {
-  flat: 1000,
-  bungalow: 0,
-  house: 5000,
-  palace: 10000,
-  hotel: 3000
-};
 //функция, которая возвращает один объект для описания объявления (advertisement)
 const getObjForAdvert = (a) => {
   const location = {
@@ -73,4 +51,4 @@ const ADVERTS_COUNT = 10;
 const createAdverts = () =>
   Array.from({ length: ADVERTS_COUNT }, (v, i) => getObjForAdvert(i + 1));
 
-export { createAdverts, OFFER_TYPE_VALUE,ROOM_OPTION,OFFER_TYPE_OPTION };
+export { createAdverts};
