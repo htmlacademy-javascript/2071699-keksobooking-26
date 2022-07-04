@@ -1035,3 +1035,11 @@ fieldset {
 .hidden {
   display: none;
 }
+.pristine-error {
+  color: #ff5635;
+  width: 200%;
+}
+
+.ad-form__element--capacity .pristine-error, .ad-form__element--price .pristine-error {
+  margin-left: -100%;
+}

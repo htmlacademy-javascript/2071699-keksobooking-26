@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="leaflet/leaflet.css" crossorigin=""/>
+  <link rel="stylesheet" href="nouislider/nouislider.css">
   <title>Кексобукинг</title>
 </head>
 
@@ -105,7 +107,7 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес (координаты)</label>
-          <input id="address" name="address" type="text" >
+          <input id="address" name="address" type="text" readonly>
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--type">
           <label class="ad-form__label" for="type">Тип жилья</label>
@@ -117,10 +119,10 @@
             <option value="palace">Дворец</option>
           </select>
         </fieldset>
-        <fieldset class="ad-form__element">
+        <fieldset class="ad-form__element ad-form__element--price">
           <label class="ad-form__label" for="price">Цена за ночь, руб.</label>
           <input id="price" name="price" type="number" placeholder="5000" required max="100000"
-          data-pristine-required-message="Обязательное поле"
+          data-pristine-required-message=" "
           data-pristine-max-message="Максимальное значение — 100 000">
           <div class="ad-form__slider"></div>
         </fieldset>
@@ -255,6 +257,8 @@
     </div>
   </template>
   <script src="pristine/pristine.min.js"></script>
+  <script src="leaflet/leaflet.js" crossorigin=""></script>
+  <script src="nouislider/nouislider.js"></script>
   <script src="/js/main.js" type="module"></script>
 </body>
 

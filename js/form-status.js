@@ -20,6 +20,7 @@ const setFormActive = (containerElement, classNameDisabled, itemsContainer) => {
   containerElement.classList.remove(classNameDisabled);
   //у всех интерактивных элементов удаляем атрибут disabled
   itemsContainer.forEach((item) => {
+
     item.removeAttribute('disabled');
   });
 };
@@ -29,7 +30,4 @@ setFormDisabled(formElement, CLASS_NAME_DISABLED_FORM, fieldsetElement);
 setFormDisabled(mapFormElement, CLASS_NAME_DISABLED_MAP, mapFiltersElement);
 
 
-setFormActive(formElement, CLASS_NAME_DISABLED_FORM, fieldsetElement);
-setFormActive(mapFormElement, CLASS_NAME_DISABLED_MAP, mapFiltersElement);
-
-export {formElement};
+export { setFormActive, formElement, CLASS_NAME_DISABLED_FORM, fieldsetElement, mapFormElement, CLASS_NAME_DISABLED_MAP, mapFiltersElement };

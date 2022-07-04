@@ -1,3 +1,4 @@
+import './map.js';
 import  './form-status.js';
 import  './form-validate.js';
 import { createAdverts } from './data.js';
@@ -7,5 +8,3 @@ import { createAdverts } from './data.js';
 console.log(
   createAdverts()
 );
-
-import './card.js';
