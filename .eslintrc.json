@@ -8,7 +8,7 @@
     "es2017": true,
     "browser": true
   },
-    "globals": {
+  "globals": {
     "_": "readonly",
     "L": "readonly",
     "noUiSlider": "readonly",
