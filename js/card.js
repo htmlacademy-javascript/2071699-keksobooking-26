@@ -28,19 +28,20 @@ const createCustomPopup = ({ offer, author }) => {
   advertElement.querySelector('.popup__text--time').textContent =
     offer.checkin && offer.checkout ? `Заезд после ${offer.checkin}, выезд до ${offer.checkout}` : '';
 
-  advertElement.querySelector('.popup__features').textContent = offer.features.join(', ');
-  advertElement.querySelector('.popup__description').textContent = offer.description;
+  advertElement.querySelector('.popup__features').textContent = offer.features ? offer.features.join(', ') : '';
+  advertElement.querySelector('.popup__description').textContent = offer.description ?? offer.description;
 
 
   //т.к. кол-во фоторгафий жилья заранее не известно, то добавляем цикл для клонирования <img>
   const advertContainerImgElement = advertElement.querySelector('.popup__photos');
   const advertImgElement = advertContainerImgElement.querySelector('.popup__photo');
-  //  клонируем <img>
-  offer.photos.forEach((el) => {
-    const advertImgCloneElement = advertImgElement.cloneNode();
-    advertImgCloneElement.src = el;
-    advertContainerImgElement.appendChild(advertImgCloneElement);
-  });
+  //  клонируем <img> (если фотографии переданы)
+  offer.photos ?
+    offer.photos.forEach((el) => {
+      const advertImgCloneElement = advertImgElement.cloneNode();
+      advertImgCloneElement.src = el;
+      advertContainerImgElement.appendChild(advertImgCloneElement);
+    }) : '';
   //пустой <img> из шаблона скроем
   advertImgElement.classList.add('hidden');
 
@@ -60,5 +61,49 @@ const createCustomPopup = ({ offer, author }) => {
   }
   return advertElement;
 };
+//закрытие окна по нажатию на кнопку
+const closeButtonElement = (formContainer) => {
+  const but = formContainer.querySelector('.error__button');
+  but.addEventListener('click', () => {
+    formContainer.remove()
+  });
+}
+//закрытие окна по нажатию на Esc
+const onPopupEscKeydown = (formContainer) => {
+  document.addEventListener('keydown', function (event) {
+    const key = event.key;
+    if (key === "Escape") {
+      formContainer.remove()
+    }
+  });
+};
+//закрытие окна по клику мыши
+const onPopupMouseClick = (formContainer) => {
+  document.addEventListener('click', function (event) {
+    formContainer.remove()
+  });
+};
 
-export { offerTypeValue, createCustomPopup };
+//функция для создания сообщения об ошиибке при отправке данных
+const createErrMessage = () => {
+  const errorTemplateElement = document.querySelector('#error').content.querySelector('.error');
+  const errorElement = errorTemplateElement.cloneNode(true);
+  document.body.append(errorElement)
+  //функции для закрытия окна
+  closeButtonElement(errorElement);
+  onPopupEscKeydown(errorElement);
+  onPopupMouseClick(errorElement);
+}
+
+
+//функция для создания сообщения об успешной отправке данных
+const createSuccessMessage = () => {
+  const successTemplateElement = document.querySelector('#success').content.querySelector('.success');
+  const successElement = successTemplateElement.cloneNode(true);
+  document.body.append(successElement)
+  //функции для закрытия окна
+  onPopupEscKeydown(successElement);
+  onPopupMouseClick(successElement);
+}
+
+export { offerTypeValue, createCustomPopup, createErrMessage, createSuccessMessage };

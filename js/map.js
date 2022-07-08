@@ -1,4 +1,3 @@
-import { createAdverts } from './data.js';
 import { createCustomPopup } from './card.js';
 import {
   setFormActive, formElement,
@@ -60,20 +59,30 @@ const customPinIcon = L.icon({
 });
 
 
-const createMarker = ({ location, offer, author }) => {
-  const marker = L.marker({
-    lat: location.lat,
-    lng: location.lng
-  },
-    {
-      icon: customPinIcon
-    }
-  );
-  marker.addTo(map)
-    .bindPopup(createCustomPopup({ offer, author }));
+const createMarker = (similarAdverts) => {
+  similarAdverts.forEach(({ location, offer, author }) => {
+    const marker = L.marker({
+      lat: location.lat,
+      lng: location.lng
+    },
+      {
+        icon: customPinIcon
+      }
+    );
+    marker.addTo(map)
+      .bindPopup(createCustomPopup({ offer, author }));
+
+  })
 };
 
-const points = createAdverts();
-points.forEach(({ location, offer, author }) => {
-  createMarker({ location, offer, author });
-});
+//функция для сброса данных меток на карте
+const restMarkers = () => {
+  mainPinMarker.setLatLng(
+    LocationTokyo
+  );
+  map.closePopup();
+  addressElement.value = `${LocationTokyo.lat}, ${LocationTokyo.lng}`;
+}
+
+
+export { createMarker, restMarkers }

@@ -1,5 +1,7 @@
 import { formElement } from './form-status.js';
-import { offerTypeValue } from './card.js';
+import { offerTypeValue, createErrMessage, createSuccessMessage } from './card.js';
+import { sendData } from './fetch-data.js';
+import { restMarkers } from './map.js';
 const pristine = new Pristine(
   formElement,
   {
@@ -18,6 +20,8 @@ const sliderPriceElement = document.querySelector('.ad-form__slider');
 //для времени заезда и выезда отдельная проверка
 const timeinElement = formElement.querySelector('[name="timein"]');
 const timeoutElement = formElement.querySelector('[name="timeout"]');
+
+const submitButElement = document.querySelector('.ad-form__submit');
 
 
 //при выборе количества комнат вводятся ограничения на допустимые варианты выбора количества гостей
@@ -100,9 +104,52 @@ pristine.addValidator(capacityFieldElement, validateRoom, getroomOptionErrorMess
 pristine.addValidator(priceElement, validatePrice, getpriceOptionErrorMessage);
 pristine.addValidator(offerTypeElement, validateIsNullPrice, getpriceOptionErrorMessage);
 
+const blockSubmitButton = () => {
+  submitButElement.disabled = true;
+  submitButElement.textContent = 'Данные отправляются...';
+};
 
-formElement.addEventListener('submit', (evt) => {
+const unblockSubmitButton = () => {
+  submitButElement.disabled = false;
+  submitButElement.textContent = 'Опубликовать';
+};
+
+
+//функция для отправки данных
+const setUserFormSubmit = () => {
+  formElement.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton()
+      sendData(
+        () => {
+          createSuccessMessage();
+          unblockSubmitButton();
+          //после успешной отправки сбрасываем данные в форме и на карте
+          formElement.reset();
+          restMarkers();
+        },
+        () => {
+          createErrMessage();
+          unblockSubmitButton();
+        },
+        new FormData(evt.target),
+      );
+
+    }
+  })
+};
+
+
+//Обрабатываем кнопку "Очистить"
+const restButtonElement = formElement.querySelector('.ad-form__reset');
+
+restButtonElement.addEventListener('click', (evt) => {
   evt.preventDefault();
-  pristine.validate();
-});
+  formElement.reset();
+  restMarkers();
+  pristine.reset();
+})
 
+export { setUserFormSubmit }

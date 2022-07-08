@@ -34,9 +34,20 @@ const getRendomLengthArray = (checkArr) => {
 };
 
 
+const getErrorLoadData = (message) => {
+  const alertContainer = document.createElement('div');
+  const divContainer = document.querySelector('.promo')
+
+  alertContainer.textContent = message;
+  alertContainer.classList.add('alert-container')
+  divContainer.after(alertContainer);
+
+}
+
 export {
   getRandomIntInclusive,
   getRandomInclusive,
   getRandomArrayElement,
-  getRendomLengthArray
+  getRendomLengthArray,
+  getErrorLoadData
 };
