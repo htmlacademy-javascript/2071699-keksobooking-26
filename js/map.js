@@ -1,34 +1,33 @@
-import { createAdverts } from './data.js';
 import { createCustomPopup } from './card.js';
 import {
-  setFormActive, formElement,
-  CLASS_NAME_DISABLED_FORM, fieldsetElement,
-  mapFormElement, CLASS_NAME_DISABLED_MAP,
-  mapFiltersElement
+  setFormActive,
+  formElement,
+  CLASS_NAME_DISABLED_FORM,
+  fieldsetElement,
+  mapFormElement,
+  CLASS_NAME_DISABLED_MAP,
+  mapFiltersElement,
 } from './form-status.js';
 
 const addressElement = document.querySelector('[name="address"]');
-const LOCATION_TOKYO = {
+const locationTokyo = {
   lat: 35.6895,
-  lng: 139.692
+  lng: 139.692,
 };
-addressElement.value = Object.values(LOCATION_TOKYO).join(', ');
+addressElement.value = `${locationTokyo.lat}, ${locationTokyo.lng}`;
 
-//const arrr = https://26.javascript.pages.academy/keksobooking/data
+const map = L.map('map-canvas')
+  .on('load', () => {
+    //переход страницы в активное состояние после инициализации карты
+    setFormActive(formElement, CLASS_NAME_DISABLED_FORM, fieldsetElement);
+    setFormActive(mapFormElement, CLASS_NAME_DISABLED_MAP, mapFiltersElement);
+  })
+  .setView(locationTokyo, 12);
 
-const map = L.map('map-canvas').on('load', () => {
-  //переход страницы в активное состояние после инициализации карты
-  setFormActive(formElement, CLASS_NAME_DISABLED_FORM, fieldsetElement);
-  setFormActive(mapFormElement, CLASS_NAME_DISABLED_MAP, mapFiltersElement);
-})
-  .setView(LOCATION_TOKYO, 12);
-
-L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },
-).addTo(map);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution:
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+}).addTo(map);
 
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
@@ -36,23 +35,17 @@ const mainPinIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
-const mainPinMarker = L.marker(
-  LOCATION_TOKYO,
-  {
-    draggable: true,
-    icon: mainPinIcon
-  },
-
-);
+const mainPinMarker = L.marker(locationTokyo, {
+  draggable: true,
+  icon: mainPinIcon,
+});
 
 mainPinMarker.addTo(map);
 
-
 mainPinMarker.on('moveend', (evt) => {
-  addressElement.value = Object.entries(evt.target.getLatLng())
-    .map((objItem) => objItem[1].toFixed(5))
-    .join(', ');
-
+  const mainMarkerLat = evt.target.getLatLng().lat.toFixed(5);
+  const mainMarkerLng = evt.target.getLatLng().lng.toFixed(5);
+  addressElement.value = `${mainMarkerLat},${mainMarkerLng}`;
 });
 
 const customPinIcon = L.icon({
@@ -61,21 +54,26 @@ const customPinIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
-
-const createMarker = ({ location, offer, author }) => {
-  const marker = L.marker({
-    lat: location.lat,
-    lng: location.lng
-  },
-  {
-    icon: customPinIcon
-  }
-  );
-  marker.addTo(map)
-    .bindPopup(createCustomPopup({ offer, author }));
+const createMarker = (similarAdverts) => {
+  similarAdverts.forEach(({ location, offer, author }) => {
+    const marker = L.marker(
+      {
+        lat: location.lat,
+        lng: location.lng,
+      },
+      {
+        icon: customPinIcon,
+      },
+    );
+    marker.addTo(map).bindPopup(createCustomPopup({ offer, author }));
+  });
 };
 
-const points = createAdverts();
-points.forEach(({ location, offer, author }) => {
-  createMarker({ location, offer, author });
-});
+//функция для сброса данных меток на карте
+const restMarkers = () => {
+  mainPinMarker.setLatLng(locationTokyo);
+  map.closePopup();
+  addressElement.value = `${locationTokyo.lat}, ${locationTokyo.lng}`;
+};
+
+export { createMarker, restMarkers };

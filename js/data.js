@@ -5,14 +5,7 @@ import {
   getRendomLengthArray,
 } from './util.js';
 
-const FEATURES_ARRAY = [
-  'wifi',
-  'dishwasher',
-  'parking',
-  'washer',
-  'elevator',
-  'conditioner',
-];
+const FEATURES_ARRAY = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const PHOTOS_ARRAY = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
@@ -48,7 +41,6 @@ const getObjForAdvert = (a) => {
 
 const ADVERTS_COUNT = 10;
 //генерируем массив. getObjForGenerationArr передаем индекс+1 для определения avatar
-const createAdverts = () =>
-  Array.from({ length: ADVERTS_COUNT }, (v, i) => getObjForAdvert(i + 1));
+const createAdverts = () => Array.from({ length: ADVERTS_COUNT }, (v, i) => getObjForAdvert(i + 1));
 
-export { createAdverts};
+export { createAdverts };
