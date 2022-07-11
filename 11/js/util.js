@@ -9,8 +9,8 @@ function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются
 }
 
-
-function getRandomInclusive(min, max, powNum) {// Результат: число с плавающей точкой из
+function getRandomInclusive(min, max, powNum) {
+  // Результат: число с плавающей точкой из
   // диапазона "min...max" с указанным "количеством знаков после запятой"
   if (max <= min || min < 0) {
     return;
@@ -19,7 +19,6 @@ function getRandomInclusive(min, max, powNum) {// Результат: число
   const randomRez = Math.random() * (max - min) + min;
   //Используем Math.pow для определения кол-ва знаков после запятой
   return Math.round(randomRez * Math.pow(10, powNum)) / Math.pow(10, powNum);
-
 }
 
 //Вовзращает строку - одно из N фиксированных значений, где N- длинна заданного массива
@@ -33,21 +32,19 @@ const getRendomLengthArray = (checkArr) => {
   return Array.from(new Set(checkArr.slice(minVal, maxVal))); //новый массив без повторов
 };
 
-
-const getErrorLoadData = (message) => {
+const showErrorLoadData = (message) => {
   const alertContainer = document.createElement('div');
-  const divContainer = document.querySelector('.promo')
+  const divContainer = document.querySelector('.promo');
 
   alertContainer.textContent = message;
-  alertContainer.classList.add('alert-container')
+  alertContainer.classList.add('alert-container');
   divContainer.after(alertContainer);
-
-}
+};
 
 export {
   getRandomIntInclusive,
   getRandomInclusive,
   getRandomArrayElement,
   getRendomLengthArray,
-  getErrorLoadData
+  showErrorLoadData,
 };
