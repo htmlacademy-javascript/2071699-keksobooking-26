@@ -1,4 +1,14 @@
-import {
+const state = {
+  adverts: [],
+};
+
+const setAdverts = (adverts) => {
+  state.adverts = adverts;
+};
+
+export { state, setAdverts };
+
+/*import {
   getRandomIntInclusive,
   getRandomInclusive,
   getRandomArrayElement,
@@ -43,4 +53,4 @@ const ADVERTS_COUNT = 10;
 //генерируем массив. getObjForGenerationArr передаем индекс+1 для определения avatar
 const createAdverts = () => Array.from({ length: ADVERTS_COUNT }, (v, i) => getObjForAdvert(i + 1));
 
-export { createAdverts };
+export { createAdverts };*/

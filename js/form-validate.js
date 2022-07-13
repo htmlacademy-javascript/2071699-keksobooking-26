@@ -2,6 +2,7 @@ import { formElement } from './form-status.js';
 import { offerTypeValue, createErrMessage, createSuccessMessage } from './card.js';
 import { sendData } from './fetch-data.js';
 import { restMarkers } from './map.js';
+import { restFormImg } from './photo-load.js';
 const pristine = new Pristine(formElement, {
   classTo: 'ad-form__element',
   errorTextParent: 'ad-form__element',
@@ -52,7 +53,8 @@ const validateRoom = () =>
   );
 //функция, которая генерирует текст ошибки
 const getroomOptionErrorMessage = () =>
-  `Если выбрано ${roomFieldElement[roomFieldElement.selectedIndex].text
+  `Если выбрано ${
+    roomFieldElement[roomFieldElement.selectedIndex].text
   }, то в поле "Количество мест" можно указать: ${ROOM_OPTION[
     roomFieldElement[roomFieldElement.selectedIndex].text
   ].join(' или ')}`;
@@ -87,8 +89,9 @@ const validateIsNullPrice = () => priceElement.value;
 //Сообщение об ошибке выводится в зависимости от значения в поле цена (пустое или не пустое)
 const getpriceOptionErrorMessage = () =>
   priceElement.value
-    ? `Минимальное значение для типа жилья "${offerTypeValue[offerTypeElement.value]}" — ${offerTypeOption[offerTypeElement.value]
-    }`
+    ? `Минимальное значение для типа жилья "${offerTypeValue[offerTypeElement.value]}" — ${
+        offerTypeOption[offerTypeElement.value]
+      }`
     : 'Заполните поле Цена за ночь, руб.';
 
 capacityFieldElement.addEventListener('change', () => {
@@ -121,6 +124,7 @@ const onSuccessSendData = () => {
   setunblockSubmitButton();
   //после успешной отправки сбрасываем данные в форме и на карте
   formElement.reset();
+  restFormImg();
   restMarkers();
 };
 const onErrorSendData = () => {
@@ -145,6 +149,7 @@ const restButtonElement = formElement.querySelector('.ad-form__reset');
 restButtonElement.addEventListener('click', (evt) => {
   evt.preventDefault();
   formElement.reset();
+  restFormImg();
   restMarkers();
   pristine.reset();
 });
