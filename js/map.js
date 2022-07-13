@@ -64,7 +64,7 @@ const priceOption = {
 const roomsFilterElement = mapFiltersContainer.querySelector('[name="housing-rooms"]');
 const guestsFilterElement = mapFiltersContainer.querySelector('[name="housing-guests"]');
 const featuresFilterArrays = [];
-const checkboxes = mapFiltersContainer.querySelectorAll('input[type=checkbox]');
+const featuresCheckboxes = mapFiltersContainer.querySelectorAll('input[type=checkbox]');
 
 //функция для отбора объявлений, удовлетворяющих условиям фильтра
 const getAdvertFilter = (advert) => {
@@ -173,7 +173,7 @@ const setMarkerFilter = (cb) => {
     clearMap();
     cb();
   });
-  checkboxes.forEach((item) =>
+  featuresCheckboxes.forEach((item) =>
     item.addEventListener('change', () => {
       if (item.checked) {
         featuresFilterArrays.push(item.value);
