@@ -66,11 +66,10 @@ const guestsFilterElement = mapFiltersContainer.querySelector('[name="housing-gu
 const featuresFilterArrays = [];
 const featuresCheckboxes = mapFiltersContainer.querySelectorAll('input[type=checkbox]');
 
-
 //1 проверка Тип жилья
 const checkTypeFilter = (offer) => {
-  return offer.type === typeFilterElement.value || typeFilterElement.value === 'any'
-}
+  return offer.type === typeFilterElement.value || typeFilterElement.value === 'any';
+};
 //2 проверка Цена
 const checkPriceFilter = (offer) => {
   const priceAdvert = offer.price;
@@ -79,28 +78,23 @@ const checkPriceFilter = (offer) => {
   switch (priceFilterElement.value) {
     case 'low':
       return priceAdvert < priceLow;
-      break;
     case 'high':
       return priceAdvert > priceHight;
-      break;
     case 'middle':
       //проверяем, что цена между значениями low и high
       return priceAdvert <= priceHight && priceAdvert >= priceLow;
-      break;
     case 'any':
       return true;
   }
-}
+};
 //3 проверка кол-во комнат
 const checkPRoomsFilter = (offer) => {
-  return offer.rooms === Number(roomsFilterElement.value) ||
-    roomsFilterElement.value === 'any'
-}
+  return offer.rooms === Number(roomsFilterElement.value) || roomsFilterElement.value === 'any';
+};
 //4 проверка Кол-во гостей
 const checkGuestsFilter = (offer) => {
-  return offer.guests === Number(guestsFilterElement.value) ||
-    guestsFilterElement.value === 'any'
-}
+  return offer.guests === Number(guestsFilterElement.value) || guestsFilterElement.value === 'any';
+};
 //5 проверка Удобства
 const checkFeaturesFilter = (offer) => {
   //Если есть выбранные checkbox, то проверяем, что в обявленияхесть такие же
@@ -119,15 +113,17 @@ const checkFeaturesFilter = (offer) => {
   if (featuresFilterArrays.length === 0) {
     return true;
   }
-}
+};
 
 //функция для отбора объявлений, удовлетворяющих условиям фильтра
 const getAdvertFilter = (advert) => {
-  return checkTypeFilter(advert.offer) &&
+  return (
+    checkTypeFilter(advert.offer) &&
     checkPriceFilter(advert.offer) &&
     checkPRoomsFilter(advert.offer) &&
     checkGuestsFilter(advert.offer) &&
     checkFeaturesFilter(advert.offer)
+  );
 };
 
 const markerGroup = L.layerGroup().addTo(map);

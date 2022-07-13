@@ -3,7 +3,12 @@ import { setUserFormSubmit } from './form-validate.js';
 import { createAdverts } from './data.js';
 import { getData } from './fetch-data.js';
 import { showErrorLoadData, debounce } from './util.js';
-import { setFormDisabled, mapFormElement, CLASS_NAME_DISABLED_MAP, mapFiltersElement } from './form-status.js'
+import {
+  setFormDisabled,
+  mapFormElement,
+  CLASS_NAME_DISABLED_MAP,
+  mapFiltersElement,
+} from './form-status.js';
 
 // eslint-disable-next-line no-console
 console.log(createAdverts());
@@ -17,7 +22,7 @@ const onSuccessLoadData = (adverts) => {
 const onErrorLoadData = () => {
   showErrorLoadData('При загрузке данных с сервера произошла ошибка!');
   setFormDisabled(mapFormElement, CLASS_NAME_DISABLED_MAP, mapFiltersElement);
-}
+};
 
 getData(onSuccessLoadData, onErrorLoadData);
 
