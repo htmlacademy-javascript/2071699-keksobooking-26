@@ -70,8 +70,8 @@ const createCustomPopup = ({ offer, author }) => {
 };
 //закрытие окна по нажатию на кнопку
 const closeButtonElement = (formContainer) => {
-  const buttonError = formContainer.querySelector('.error__button');
-  buttonError.addEventListener('click', () => {
+  const errorButton = formContainer.querySelector('.error__button');
+  errorButton.addEventListener('click', () => {
     formContainer.remove();
   });
 };

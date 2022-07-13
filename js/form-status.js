@@ -31,6 +31,7 @@ export {
   formElement,
   CLASS_NAME_DISABLED_FORM,
   fieldsetElement,
+  setFormDisabled,
   mapFormElement,
   CLASS_NAME_DISABLED_MAP,
   mapFiltersElement,
