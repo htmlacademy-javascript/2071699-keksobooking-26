@@ -66,73 +66,71 @@ const guestsFilterElement = mapFiltersContainer.querySelector('[name="housing-gu
 const featuresFilterArrays = [];
 const featuresCheckboxes = mapFiltersContainer.querySelectorAll('input[type=checkbox]');
 
-//функция для отбора объявлений, удовлетворяющих условиям фильтра
-const getAdvertFilter = (advert) => {
-  let sameAdvert = 0;
-  //1 проверка Тип жилья
-  if (advert.offer.type === typeFilterElement.value || typeFilterElement.value === 'any') {
-    //увеличиваем счетчик если тип жилья в объявлении совпадает с фильтром
-    //либо если фильтр не задан - "any" (тогда подходят все условия)
-    sameAdvert += 1;
-  }
-  //2 проверка Цена
+//1 проверка Тип жилья
+const checkTypeFilter = (offer) => {
+  return offer.type === typeFilterElement.value || typeFilterElement.value === 'any';
+};
+//2 проверка Цена
+const checkPriceFilter = (offer) => {
+  const priceAdvert = offer.price;
+  const priceLow = priceOption['low'];
+  const priceHight = priceOption['high'];
   switch (priceFilterElement.value) {
     case 'low':
-      sameAdvert += advert.offer.price < priceOption['low'] ? 1 : 0;
-      break;
+      return priceAdvert < priceLow;
     case 'high':
-      sameAdvert += advert.offer.price > priceOption['high'] ? 1 : 0;
-      break;
+      return priceAdvert > priceHight;
     case 'middle':
       //проверяем, что цена между значениями low и high
-      sameAdvert +=
-        advert.offer.price <= priceOption['high'] && advert.offer.price >= priceOption['low']
-          ? 1
-          : 0;
-      break;
+      return priceAdvert <= priceHight && priceAdvert >= priceLow;
     case 'any':
-      sameAdvert += 1;
+      return true;
   }
-  //3 проверка кол-во комнат
-  if (
-    advert.offer.rooms === Number(roomsFilterElement.value) ||
-    roomsFilterElement.value === 'any'
-  ) {
-    sameAdvert += 1;
-  }
-  //4 проверка Кол-во гостей
-  if (
-    advert.offer.guests === Number(guestsFilterElement.value) ||
-    guestsFilterElement.value === 'any'
-  ) {
-    sameAdvert += 1;
-  }
-  //5 проверка Удобства
+};
+//3 проверка кол-во комнат
+const checkPRoomsFilter = (offer) => {
+  return offer.rooms === Number(roomsFilterElement.value) || roomsFilterElement.value === 'any';
+};
+//4 проверка Кол-во гостей
+const checkGuestsFilter = (offer) => {
+  return offer.guests === Number(guestsFilterElement.value) || guestsFilterElement.value === 'any';
+};
+//5 проверка Удобства
+const checkFeaturesFilter = (offer) => {
   //Если есть выбранные checkbox, то проверяем, что в обявленияхесть такие же
-  if (featuresFilterArrays.length > 0 && advert.offer.features) {
+  if (featuresFilterArrays.length > 0 && offer.features) {
     let i = 0;
     featuresFilterArrays.forEach((el) => {
-      if (advert.offer.features.includes(el)) {
+      if (offer.features.includes(el)) {
         i += 1; //если элемент в массиве есть, то увеличиваем счетчик i
       }
     });
-
     /*увеличиваем счетчик sameAdvert в том случае если колв-во совпадений (счетчик i)
     такое же как и кол-во выбранных удобств*/
-    sameAdvert += i === featuresFilterArrays.length ? 1 : 0;
+    return i === featuresFilterArrays.length;
   }
   //если удобства не выбраны, то ничего не проверяем, считаем, что все объявления удовлетворяют данному условию
   if (featuresFilterArrays.length === 0) {
-    sameAdvert += 1;
+    return true;
   }
-  return sameAdvert;
+};
+
+//функция для отбора объявлений, удовлетворяющих условиям фильтра
+const getAdvertFilter = (advert) => {
+  return (
+    checkTypeFilter(advert.offer) &&
+    checkPriceFilter(advert.offer) &&
+    checkPRoomsFilter(advert.offer) &&
+    checkGuestsFilter(advert.offer) &&
+    checkFeaturesFilter(advert.offer)
+  );
 };
 
 const markerGroup = L.layerGroup().addTo(map);
 
 const createMarker = (similarAdverts) => {
   const filterAdverts = similarAdverts
-    .filter((advert) => getAdvertFilter(advert) === 5) //всего 5 проверок, объявление должно удовлетворять всем 5-ти
+    .filter((advert) => getAdvertFilter(advert)) //функция возвращает true/false
     .slice(0, 10);
 
   filterAdverts.forEach(({ location, offer, author }) => {
