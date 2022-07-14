@@ -20,11 +20,14 @@ import {
 import { debounce } from './util.js';
 import { state } from './data.js';
 
-const addressElement = document.querySelector('[name="address"]');
+const ADVERTS_COUNT = 10;
+const RERENDER_DELAY = 500;
 const locationTokyo = {
   lat: 35.6895,
   lng: 139.692,
 };
+const addressElement = document.querySelector('[name="address"]');
+
 addressElement.value = `${locationTokyo.lat}, ${locationTokyo.lng}`;
 
 const map = L.map('map-canvas')
@@ -67,7 +70,6 @@ const customPinIcon = L.icon({
 
 const markerGroup = L.layerGroup().addTo(map);
 
-const ADVERTS_COUNT = 10;
 const createMarker = () => {
   const filterAdverts = state.adverts
     .filter((advert) => getAdvertFilter(advert)) //функция возвращает true/false
@@ -93,7 +95,6 @@ const clearMap = () => {
   map.setView(locationTokyo, 12);
 };
 
-const RERENDER_DELAY = 500;
 const createMarkerWithDebounce = debounce(() => createMarker(state.adverts), RERENDER_DELAY);
 
 const updateMap = () => {
@@ -122,6 +123,7 @@ const restMarkers = () => {
   mainPinMarker.setLatLng(locationTokyo);
   map.setView(locationTokyo, 12);
   addressElement.value = `${locationTokyo.lat}, ${locationTokyo.lng}`;
+  updateMap();
 };
 
 export { createMarker, restMarkers };

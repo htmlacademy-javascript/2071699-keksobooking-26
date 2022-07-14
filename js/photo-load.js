@@ -1,8 +1,8 @@
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const DEFAULT_AVATAR = 'img/muffin-grey.svg';
 
 const avatarChooser = document.querySelector('.ad-form__field input[type=file]');
 const avatarPreview = document.querySelector('.ad-form-header__preview img');
-const defoultAvatar = 'img/muffin-grey.svg';
 
 avatarChooser.addEventListener('change', () => {
   const avatarFile = avatarChooser.files[0];
@@ -34,7 +34,7 @@ houseChooser.addEventListener('change', () => {
 });
 
 const restFormImg = () => {
-  avatarPreview.src = defoultAvatar;
+  avatarPreview.src = DEFAULT_AVATAR;
   if (housePreview.querySelector('img')) {
     housePreview.querySelector('img').remove();
   }

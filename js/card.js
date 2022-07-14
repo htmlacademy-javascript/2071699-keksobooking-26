@@ -69,7 +69,7 @@ const createCustomPopup = ({ offer, author }) => {
   return advertElement;
 };
 //закрытие окна по нажатию на кнопку
-const closeButtonElement = (formContainer) => {
+const onErrorButtonClick = (formContainer) => {
   const errorButton = formContainer.querySelector('.error__button');
   errorButton.addEventListener('click', () => {
     formContainer.remove();
@@ -97,7 +97,7 @@ const createErrMessage = () => {
   const errorElement = errorTemplateElement.cloneNode(true);
   document.body.append(errorElement);
   //функции для закрытия окна
-  closeButtonElement(errorElement);
+  onErrorButtonClick(errorElement);
   onPopupEscKeydown(errorElement);
   onPopupMouseClick(errorElement);
 };

@@ -1,15 +1,15 @@
-const mapFiltersContainer = document.querySelector('.map__filters-container');
-const typeFilterElement = mapFiltersContainer.querySelector('[name="housing-type"]');
-const priceFilterElement = mapFiltersContainer.querySelector('[name="housing-price"]');
 const priceOption = {
   middle: 0,
   low: 10000,
   high: 50000,
 };
-const roomsFilterElement = mapFiltersContainer.querySelector('[name="housing-rooms"]');
-const guestsFilterElement = mapFiltersContainer.querySelector('[name="housing-guests"]');
+const mapFiltersElement = document.querySelector('.map__filters');
+const typeFilterElement = mapFiltersElement.querySelector('[name="housing-type"]');
+const priceFilterElement = mapFiltersElement.querySelector('[name="housing-price"]');
+const roomsFilterElement = mapFiltersElement.querySelector('[name="housing-rooms"]');
+const guestsFilterElement = mapFiltersElement.querySelector('[name="housing-guests"]');
 const featuresFilterArrays = [];
-const featuresCheckboxes = mapFiltersContainer.querySelectorAll('input[type=checkbox]');
+const featuresCheckboxes = mapFiltersElement.querySelectorAll('input[type=checkbox]');
 
 //1 проверка Тип жилья
 const checkTypeFilter = (offer) => {
@@ -33,7 +33,7 @@ const checkPriceFilter = (offer) => {
   }
 };
 //3 проверка кол-во комнат
-const checkPRoomsFilter = (offer) => {
+const checkRoomsFilter = (offer) => {
   return offer.rooms === Number(roomsFilterElement.value) || roomsFilterElement.value === 'any';
 };
 //4 проверка Кол-во гостей
@@ -65,13 +65,14 @@ const getAdvertFilter = (advert) => {
   return (
     checkTypeFilter(advert.offer) &&
     checkPriceFilter(advert.offer) &&
-    checkPRoomsFilter(advert.offer) &&
+    checkRoomsFilter(advert.offer) &&
     checkGuestsFilter(advert.offer) &&
     checkFeaturesFilter(advert.offer)
   );
 };
 
 export {
+  mapFiltersElement,
   typeFilterElement,
   priceFilterElement,
   roomsFilterElement,

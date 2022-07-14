@@ -3,24 +3,7 @@ import { offerTypeValue, createErrMessage, createSuccessMessage } from './card.j
 import { sendData } from './fetch-data.js';
 import { restMarkers } from './map.js';
 import { restFormImg } from './photo-load.js';
-const pristine = new Pristine(formElement, {
-  classTo: 'ad-form__element',
-  errorTextParent: 'ad-form__element',
-  errorTextTag: 'div',
-});
-
-//для Количество комнат и количество мест отдельная проверка
-const roomFieldElement = formElement.querySelector('[name="rooms"]');
-const capacityFieldElement = formElement.querySelector('[name="capacity"]');
-//для Типа жилья и цены отдельная проверка
-const offerTypeElement = formElement.querySelector('[name="type"]');
-const priceElement = formElement.querySelector('[name="price"]');
-const sliderPriceElement = document.querySelector('.ad-form__slider');
-//для времени заезда и выезда отдельная проверка
-const timeinElement = formElement.querySelector('[name="timein"]');
-const timeoutElement = formElement.querySelector('[name="timeout"]');
-
-const submitButElement = document.querySelector('.ad-form__submit');
+import { mapFiltersElement } from './map-filters.js';
 
 //при выборе количества комнат вводятся ограничения на допустимые варианты выбора количества гостей
 const ROOM_OPTION = {
@@ -36,6 +19,27 @@ const offerTypeOption = {
   palace: 10000,
   hotel: 3000,
 };
+
+//для Количество комнат и количество мест отдельная проверка
+const roomFieldElement = formElement.querySelector('[name="rooms"]');
+const capacityFieldElement = formElement.querySelector('[name="capacity"]');
+//для Типа жилья и цены отдельная проверка
+const offerTypeElement = formElement.querySelector('[name="type"]');
+const priceElement = formElement.querySelector('[name="price"]');
+const sliderPriceElement = document.querySelector('.ad-form__slider');
+//для времени заезда и выезда отдельная проверка
+const timeinElement = formElement.querySelector('[name="timein"]');
+const timeoutElement = formElement.querySelector('[name="timeout"]');
+
+const restButtonElement = formElement.querySelector('.ad-form__reset');
+const submitButtonElement = document.querySelector('.ad-form__submit');
+
+const pristine = new Pristine(formElement, {
+  classTo: 'ad-form__element',
+  errorTextParent: 'ad-form__element',
+  errorTextTag: 'div',
+});
+
 noUiSlider.create(sliderPriceElement, {
   range: {
     min: 0,
@@ -52,7 +56,7 @@ const validateRoom = () =>
     capacityFieldElement[capacityFieldElement.selectedIndex].text,
   );
 //функция, которая генерирует текст ошибки
-const getroomOptionErrorMessage = () =>
+const getRoomOptionErrorMessage = () =>
   `Если выбрано ${
     roomFieldElement[roomFieldElement.selectedIndex].text
   }, то в поле "Количество мест" можно указать: ${ROOM_OPTION[
@@ -87,7 +91,7 @@ const validatePrice = () => priceElement.value >= offerTypeOption[offerTypeEleme
 //проверка, что поле с ценой заполнено
 const validateIsNullPrice = () => priceElement.value;
 //Сообщение об ошибке выводится в зависимости от значения в поле цена (пустое или не пустое)
-const getpriceOptionErrorMessage = () =>
+const getPriceOptionErrorMessage = () =>
   priceElement.value
     ? `Минимальное значение для типа жилья "${offerTypeValue[offerTypeElement.value]}" — ${
         offerTypeOption[offerTypeElement.value]
@@ -102,34 +106,35 @@ roomFieldElement.addEventListener('change', () => {
   pristine.validate([capacityFieldElement, roomFieldElement]);
 });
 
-pristine.addValidator(roomFieldElement, validateRoom, getroomOptionErrorMessage);
-pristine.addValidator(capacityFieldElement, validateRoom, getroomOptionErrorMessage);
+pristine.addValidator(roomFieldElement, validateRoom, getRoomOptionErrorMessage);
+pristine.addValidator(capacityFieldElement, validateRoom, getRoomOptionErrorMessage);
 
-pristine.addValidator(priceElement, validatePrice, getpriceOptionErrorMessage);
-pristine.addValidator(offerTypeElement, validateIsNullPrice, getpriceOptionErrorMessage);
+pristine.addValidator(priceElement, validatePrice, getPriceOptionErrorMessage);
+pristine.addValidator(offerTypeElement, validateIsNullPrice, getPriceOptionErrorMessage);
 
-const setblockSubmitButton = () => {
-  submitButElement.disabled = true;
-  submitButElement.textContent = 'Данные отправляются...';
+const setBlockSubmitButton = () => {
+  submitButtonElement.disabled = true;
+  submitButtonElement.textContent = 'Данные отправляются...';
 };
 
-const setunblockSubmitButton = () => {
-  submitButElement.disabled = false;
-  submitButElement.textContent = 'Опубликовать';
+const setUnblockSubmitButton = () => {
+  submitButtonElement.disabled = false;
+  submitButtonElement.textContent = 'Опубликовать';
 };
 
 //функции для отправки данных
 const onSuccessSendData = () => {
   createSuccessMessage();
-  setunblockSubmitButton();
+  setUnblockSubmitButton();
   //после успешной отправки сбрасываем данные в форме и на карте
   formElement.reset();
   restFormImg();
   restMarkers();
+  mapFiltersElement.reset();
 };
 const onErrorSendData = () => {
   createErrMessage();
-  setunblockSubmitButton();
+  setUnblockSubmitButton();
 };
 
 const setUserFormSubmit = () => {
@@ -137,20 +142,19 @@ const setUserFormSubmit = () => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
-      setblockSubmitButton();
+      setBlockSubmitButton();
       sendData(onSuccessSendData, onErrorSendData, new FormData(evt.target));
     }
   });
 };
 
 //Обрабатываем кнопку "Очистить"
-const restButtonElement = formElement.querySelector('.ad-form__reset');
-
 restButtonElement.addEventListener('click', (evt) => {
   evt.preventDefault();
   formElement.reset();
   restFormImg();
   restMarkers();
+  mapFiltersElement.reset();
   pristine.reset();
 });
 
