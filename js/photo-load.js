@@ -16,6 +16,8 @@ avatarChooser.addEventListener('change', () => {
   }
 });
 
+// лучше все поиски выносить в верх модуля в одном место, визуально будет красивее и сразу будет
+// видно с какими элементами в этом модуле работаешь
 const houseChooser = document.querySelector('.ad-form__upload input[type=file]');
 const housePreview = document.querySelector('.ad-form__photo');
 

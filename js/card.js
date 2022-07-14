@@ -7,6 +7,7 @@ const offerTypeValue = {
 };
 
 const createCustomPopup = ({ offer, author }) => {
+  // элементы нужно вынести за пределы функции Д21
   const cardTemplateElement = document.querySelector('#card').content.querySelector('.popup');
   const advertElement = cardTemplateElement.cloneNode(true);
   const advertContainerImgElement = advertElement.querySelector('.popup__photos');
@@ -49,6 +50,8 @@ const createCustomPopup = ({ offer, author }) => {
       advertContainerImgElement.appendChild(advertImgCloneElement);
     });
   }
+
+  // лучше удалить его из разметки и вынести в template, это ничего не нарушает, но выглядит не очень
   //пустой <img> из шаблона скроем
   advertImgElement.classList.add('hidden');
 
@@ -59,6 +62,7 @@ const createCustomPopup = ({ offer, author }) => {
   //Формируем массив элементов внутри advertElement и перебираем их
   //Если фото жилья нет, то клоны выше не создадуться и соответсвенной фоторгафий не будет, поэтому эту ситуацию здесь обрабатывать уже не нужно
   const itemsAdvert = advertElement.children;
+  // Д26, нужно переделать на forEach
   for (let i = 0; i < itemsAdvert.length; i++) {
     const hasItemsText = itemsAdvert[i].textContent === '';
     const hasItemsImg = itemsAdvert[i].getAttribute('src') === '';
@@ -71,6 +75,9 @@ const createCustomPopup = ({ offer, author }) => {
 };
 //закрытие окна по нажатию на кнопку
 const onErrorButtonClick = (formContainer) => {
+  // не че не нарушает, но в целом не очень надежное место, так как пользователь этой функции
+  // может не знать, что требуется внутри формы элемент error__button, если он отсутствует, тогда будет ошибка
+  // думаю это не стоит править
   const errorButton = formContainer.querySelector('.error__button');
   errorButton.addEventListener('click', () => {
     formContainer.remove();
@@ -78,6 +85,8 @@ const onErrorButtonClick = (formContainer) => {
 };
 //закрытие окна по нажатию на Esc
 const onPopupEscKeydown = (formContainer) => {
+  // Б26 при каждой отправке формы, навешивается новаый обработчик, а старый не удаляется
+  // это очень палевное место, потому что навешивается на body, его все скорее увидят
   document.addEventListener('keydown', function (evt) {
     const key = evt.key;
     if (key === 'Escape') {
@@ -87,6 +96,7 @@ const onPopupEscKeydown = (formContainer) => {
 };
 //закрытие окна по клику мыши
 const onPopupMouseClick = (formContainer) => {
+  // Б26 при каждой отправке формы, навешивается новаый обработчик, а старый не удаляется
   document.addEventListener('click', function () {
     formContainer.remove();
   });

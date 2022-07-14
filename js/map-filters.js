@@ -44,6 +44,8 @@ const checkGuestsFilter = (offer) => {
 const checkFeaturesFilter = (offer) => {
   //Если есть выбранные checkbox, то проверяем, что в обявленияхесть такие же
   if (featuresFilterArrays.length > 0 && offer.features) {
+    // счетчик это не индекс, i=index общепринятое сокращение индекса, если его использовать как счетчик
+    // то это путает, здесь лучше хотя бы featuresCount
     let i = 0;
     featuresFilterArrays.forEach((el) => {
       if (offer.features.includes(el)) {

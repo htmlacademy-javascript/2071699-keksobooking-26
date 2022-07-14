@@ -49,6 +49,9 @@ noUiSlider.create(sliderPriceElement, {
   step: 1,
   connect: 'lower',
 });
+
+// вроде не под какой критерий не попадает, но какое-то не хорошее место,
+// желательно такие манипуляции в какой-нибудь функции выполнять
 priceElement.value = '';
 //функция, которая проверяет, что кол-во гостей, соответсвует заданному количеству комнат
 const validateRoom = () =>
@@ -63,6 +66,7 @@ const getRoomOptionErrorMessage = () =>
     roomFieldElement[roomFieldElement.selectedIndex].text
   ].join(' или ')}`;
 //переопределяем значение поля Цена за ночь. в зависимости от выбранного значения в поле Тип жилья
+// не че не нарушается, но лучше колбэки в отдельный функции вынести, относится ко всем нижненаписанным функциям
 offerTypeElement.addEventListener('change', () => {
   priceElement.placeholder = offerTypeOption[offerTypeElement.value];
   priceElement.min = offerTypeOption[offerTypeElement.value];
@@ -88,6 +92,8 @@ timeoutElement.addEventListener('change', () => {
 //проверка, что цена не ниже допустимой
 const validatePrice = () => priceElement.value >= offerTypeOption[offerTypeElement.value];
 //проверка, что поле с ценой заполнено
+// по названию, функция проверяет на null, по факту возвращает просто значение, нужно либо другое название
+// либо добавить проверка на null
 const validateIsNullPrice = () => priceElement.value;
 //Сообщение об ошибке выводится в зависимости от значения в поле цена (пустое или не пустое)
 const getPriceOptionErrorMessage = () =>
@@ -112,6 +118,7 @@ pristine.addValidator(priceElement, validatePrice, getPriceOptionErrorMessage);
 pristine.addValidator(offerTypeElement, validateIsNullPrice, getPriceOptionErrorMessage);
 
 const setBlockSubmitButton = () => {
+  // 1 пункт замечаний по ТЗ, сюда нужно добавить навешивание класса дизейбл
   submitButtonElement.disabled = true;
   submitButtonElement.textContent = 'Данные отправляются...';
 };
@@ -126,6 +133,9 @@ const onSuccessSendData = () => {
   createSuccessMessage();
   setUnblockSubmitButton();
   //после успешной отправки сбрасываем данные в форме и на карте
+  // Д14 этот код повторяется в обработчик "очистить", и если бы не повторялся,
+  // все равно желательно смысловые блоки выносить в отдельную функцию, в данном случаи 5 стро относится
+  // к сбросу
   formElement.reset();
   restFormImg();
   restMarkers();

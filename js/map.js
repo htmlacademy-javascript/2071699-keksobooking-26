@@ -28,6 +28,9 @@ const locationTokyo = {
 };
 const addressElement = document.querySelector('[name="address"]');
 
+// уже писал, не лучшая практика, value присваивать в корне модуля
+// правилом хорошего тона считается, все изменения делать только через функции
+// самое элементарное создать функции const initMap = () => {} и перенести это туда
 addressElement.value = `${locationTokyo.lat}, ${locationTokyo.lng}`;
 
 const map = L.map('map-canvas')
