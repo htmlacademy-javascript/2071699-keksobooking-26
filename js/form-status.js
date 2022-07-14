@@ -1,11 +1,12 @@
+const CLASS_NAME_DISABLED_MAP = 'map__filters--disabled';
+const CLASS_NAME_DISABLED_FORM = 'ad-form--disabled';
+
 //Определяем элемент формы ad-form и все интерактивные элементы формы
 const formElement = document.querySelector('.ad-form');
 const fieldsetElement = formElement.querySelectorAll('input, select, div.ad-form__slider');
-const CLASS_NAME_DISABLED_FORM = 'ad-form--disabled';
 //Определяем элемент формы map__filters и все интерактивные элементы формы
 const mapFormElement = document.querySelector('.map__filters');
 const mapFiltersElement = mapFormElement.querySelectorAll('input, select');
-const CLASS_NAME_DISABLED_MAP = 'map__filters--disabled';
 
 const setFormDisabled = (containerElement, classNameDisabled, itemsContainer) => {
   containerElement.classList.add(classNameDisabled);

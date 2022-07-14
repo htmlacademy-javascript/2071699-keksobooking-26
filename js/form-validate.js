@@ -49,7 +49,7 @@ noUiSlider.create(sliderPriceElement, {
   step: 1,
   connect: 'lower',
 });
-
+priceElement.value = '';
 //функция, которая проверяет, что кол-во гостей, соответсвует заданному количеству комнат
 const validateRoom = () =>
   ROOM_OPTION[roomFieldElement[roomFieldElement.selectedIndex].text].includes(
@@ -66,7 +66,6 @@ const getRoomOptionErrorMessage = () =>
 offerTypeElement.addEventListener('change', () => {
   priceElement.placeholder = offerTypeOption[offerTypeElement.value];
   priceElement.min = offerTypeOption[offerTypeElement.value];
-
   pristine.validate([priceElement, offerTypeElement]);
 });
 
@@ -74,7 +73,7 @@ priceElement.addEventListener('change', () => {
   pristine.validate([priceElement, offerTypeElement]);
 });
 
-sliderPriceElement.noUiSlider.on('update', () => {
+sliderPriceElement.noUiSlider.on('change', () => {
   priceElement.value = sliderPriceElement.noUiSlider.get();
   pristine.validate([priceElement, offerTypeElement]);
 });

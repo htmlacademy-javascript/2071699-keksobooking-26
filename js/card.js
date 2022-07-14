@@ -9,6 +9,9 @@ const offerTypeValue = {
 const createCustomPopup = ({ offer, author }) => {
   const cardTemplateElement = document.querySelector('#card').content.querySelector('.popup');
   const advertElement = cardTemplateElement.cloneNode(true);
+  const advertContainerImgElement = advertElement.querySelector('.popup__photos');
+  const advertImgElement = advertContainerImgElement.querySelector('.popup__photo');
+
   advertElement.querySelector('.popup__title').textContent = offer.title;
   advertElement.querySelector('.popup__text--address').textContent = offer.address;
 
@@ -38,8 +41,6 @@ const createCustomPopup = ({ offer, author }) => {
     : '';
 
   //т.к. кол-во фоторгафий жилья заранее не известно, то добавляем цикл для клонирования <img>
-  const advertContainerImgElement = advertElement.querySelector('.popup__photos');
-  const advertImgElement = advertContainerImgElement.querySelector('.popup__photo');
   //  клонируем <img> (если фотографии переданы)
   if (offer.photos) {
     offer.photos.forEach((el) => {
