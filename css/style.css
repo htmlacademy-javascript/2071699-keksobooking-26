@@ -1045,3 +1045,8 @@ fieldset {
   color: #ff5635;
   font-size: x-large;
 }
+
+.ad-form__submit--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

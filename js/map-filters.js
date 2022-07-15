@@ -11,11 +11,10 @@ const guestsFilterElement = mapFiltersElement.querySelector('[name="housing-gues
 const featuresFilterArrays = [];
 const featuresCheckboxes = mapFiltersElement.querySelectorAll('input[type=checkbox]');
 
-//1 проверка Тип жилья
 const checkTypeFilter = (offer) => {
   return offer.type === typeFilterElement.value || typeFilterElement.value === 'any';
 };
-//2 проверка Цена
+
 const checkPriceFilter = (offer) => {
   const priceAdvert = offer.price;
   const priceLow = priceOption['low'];
@@ -32,29 +31,27 @@ const checkPriceFilter = (offer) => {
       return true;
   }
 };
-//3 проверка кол-во комнат
+
 const checkRoomsFilter = (offer) => {
   return offer.rooms === Number(roomsFilterElement.value) || roomsFilterElement.value === 'any';
 };
-//4 проверка Кол-во гостей
+
 const checkGuestsFilter = (offer) => {
   return offer.guests === Number(guestsFilterElement.value) || guestsFilterElement.value === 'any';
 };
-//5 проверка Удобства
+
 const checkFeaturesFilter = (offer) => {
-  //Если есть выбранные checkbox, то проверяем, что в обявленияхесть такие же
+  //Если есть выбранные checkbox, то проверяем, что в обявлениях есть такие же
   if (featuresFilterArrays.length > 0 && offer.features) {
-    // счетчик это не индекс, i=index общепринятое сокращение индекса, если его использовать как счетчик
-    // то это путает, здесь лучше хотя бы featuresCount
-    let i = 0;
+    let featuresCount = 0;
     featuresFilterArrays.forEach((el) => {
       if (offer.features.includes(el)) {
-        i += 1; //если элемент в массиве есть, то увеличиваем счетчик i
+        featuresCount += 1; //если элемент в массиве есть, то увеличиваем счетчик featuresCount
       }
     });
-    /*увеличиваем счетчик sameAdvert в том случае если колв-во совпадений (счетчик i)
+    /*увеличиваем счетчик sameAdvert в том случае если колв-во совпадений (счетчик featuresCount)
     такое же как и кол-во выбранных удобств*/
-    return i === featuresFilterArrays.length;
+    return featuresCount === featuresFilterArrays.length;
   }
   //если удобства не выбраны, то ничего не проверяем, считаем, что все объявления удовлетворяют данному условию
   if (featuresFilterArrays.length === 0) {
@@ -62,7 +59,7 @@ const checkFeaturesFilter = (offer) => {
   }
 };
 
-//функция для отбора объявлений, удовлетворяющих условиям фильтра
+//объявление должно удовлетворять всем фильтрам
 const getAdvertFilter = (advert) => {
   return (
     checkTypeFilter(advert.offer) &&

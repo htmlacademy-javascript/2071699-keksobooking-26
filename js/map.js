@@ -28,16 +28,15 @@ const locationTokyo = {
 };
 const addressElement = document.querySelector('[name="address"]');
 
-// уже писал, не лучшая практика, value присваивать в корне модуля
-// правилом хорошего тона считается, все изменения делать только через функции
-// самое элементарное создать функции const initMap = () => {} и перенести это туда
-addressElement.value = `${locationTokyo.lat}, ${locationTokyo.lng}`;
+const setAddressDefault = () =>
+  (addressElement.value = `${locationTokyo.lat}, ${locationTokyo.lng}`);
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    //переход страницы в активное состояние после инициализации карты
+    //переход страницы в активное состояние после инициализации карты и установка адреса по умолчанию
     setFormActive(formElement, CLASS_NAME_DISABLED_FORM, fieldsetElement);
     setFormActive(mapFormElement, CLASS_NAME_DISABLED_MAP, mapFiltersElement);
+    setAddressDefault();
   })
   .setView(locationTokyo, 12);
 
@@ -75,7 +74,7 @@ const markerGroup = L.layerGroup().addTo(map);
 
 const createMarker = () => {
   const filterAdverts = state.adverts
-    .filter((advert) => getAdvertFilter(advert)) //функция возвращает true/false
+    .filter((advert) => getAdvertFilter(advert))
     .slice(0, ADVERTS_COUNT);
 
   filterAdverts.forEach(({ location, offer, author }) => {
@@ -105,7 +104,6 @@ const updateMap = () => {
   createMarkerWithDebounce();
 };
 
-//функция для вывода меток в зависимости от указанных фильтров
 typeFilterElement.addEventListener('change', updateMap);
 priceFilterElement.addEventListener('change', updateMap);
 roomsFilterElement.addEventListener('change', updateMap);
@@ -121,11 +119,10 @@ featuresCheckboxes.forEach((item) =>
   }),
 );
 
-//функция для сброса данных меток на карте
 const restMarkers = () => {
   mainPinMarker.setLatLng(locationTokyo);
   map.setView(locationTokyo, 12);
-  addressElement.value = `${locationTokyo.lat}, ${locationTokyo.lng}`;
+  setAddressDefault();
   updateMap();
 };
 

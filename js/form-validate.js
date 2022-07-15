@@ -5,7 +5,6 @@ import { restMarkers } from './map.js';
 import { restFormImg } from './photo-load.js';
 import { mapFiltersElement } from './map-filters.js';
 
-//при выборе количества комнат вводятся ограничения на допустимые варианты выбора количества гостей
 const ROOM_OPTION = {
   '1 комната': ['для 1 гостя'],
   '2 комнаты': ['для 2 гостей', 'для 1 гостя'],
@@ -20,14 +19,13 @@ const offerTypeOption = {
   hotel: 3000,
 };
 
-//для Количество комнат и количество мест отдельная проверка
 const roomFieldElement = formElement.querySelector('[name="rooms"]');
 const capacityFieldElement = formElement.querySelector('[name="capacity"]');
-//для Типа жилья и цены отдельная проверка
+
 const offerTypeElement = formElement.querySelector('[name="type"]');
 const priceElement = formElement.querySelector('[name="price"]');
 const sliderPriceElement = document.querySelector('.ad-form__slider');
-//для времени заезда и выезда отдельная проверка
+
 const timeinElement = formElement.querySelector('[name="timein"]');
 const timeoutElement = formElement.querySelector('[name="timeout"]');
 
@@ -50,96 +48,86 @@ noUiSlider.create(sliderPriceElement, {
   connect: 'lower',
 });
 
-// вроде не под какой критерий не попадает, но какое-то не хорошее место,
-// желательно такие манипуляции в какой-нибудь функции выполнять
-priceElement.value = '';
-//функция, которая проверяет, что кол-во гостей, соответсвует заданному количеству комнат
 const validateRoom = () =>
   ROOM_OPTION[roomFieldElement[roomFieldElement.selectedIndex].text].includes(
     capacityFieldElement[capacityFieldElement.selectedIndex].text,
   );
-//функция, которая генерирует текст ошибки
+
 const getRoomOptionErrorMessage = () =>
   `Если выбрано ${
     roomFieldElement[roomFieldElement.selectedIndex].text
   }, то в поле "Количество мест" можно указать: ${ROOM_OPTION[
     roomFieldElement[roomFieldElement.selectedIndex].text
   ].join(' или ')}`;
-//переопределяем значение поля Цена за ночь. в зависимости от выбранного значения в поле Тип жилья
-// не че не нарушается, но лучше колбэки в отдельный функции вынести, относится ко всем нижненаписанным функциям
-offerTypeElement.addEventListener('change', () => {
+
+const syncValidPriceOfferType = () => pristine.validate([priceElement, offerTypeElement]);
+
+const changePropertyPriceElement = () => {
   priceElement.placeholder = offerTypeOption[offerTypeElement.value];
   priceElement.min = offerTypeOption[offerTypeElement.value];
-  pristine.validate([priceElement, offerTypeElement]);
-});
+  syncValidPriceOfferType();
+};
 
-priceElement.addEventListener('change', () => {
-  pristine.validate([priceElement, offerTypeElement]);
-});
-
-sliderPriceElement.noUiSlider.on('change', () => {
+const changePriceBySlider = () => {
   priceElement.value = sliderPriceElement.noUiSlider.get();
-  pristine.validate([priceElement, offerTypeElement]);
-});
+  syncValidPriceOfferType();
+};
 
-//переопределяем время выезда в зависимости от выбранного значения в поле время заезда и наоборот
-timeinElement.addEventListener('change', () => {
-  timeoutElement.value = timeinElement.value;
-});
-timeoutElement.addEventListener('change', () => {
-  timeinElement.value = timeoutElement.value;
-});
-//проверка, что цена не ниже допустимой
+offerTypeElement.addEventListener('change', changePropertyPriceElement);
+priceElement.addEventListener('change', syncValidPriceOfferType);
+sliderPriceElement.noUiSlider.on('update', changePriceBySlider);
+
+const syncTimeOutIn = () => (timeoutElement.value = timeinElement.value);
+const syncTimeInOut = () => (timeinElement.value = timeoutElement.value);
+timeinElement.addEventListener('change', syncTimeOutIn);
+timeoutElement.addEventListener('change', syncTimeInOut);
+
 const validatePrice = () => priceElement.value >= offerTypeOption[offerTypeElement.value];
-//проверка, что поле с ценой заполнено
-// по названию, функция проверяет на null, по факту возвращает просто значение, нужно либо другое название
-// либо добавить проверка на null
-const validateIsNullPrice = () => priceElement.value;
-//Сообщение об ошибке выводится в зависимости от значения в поле цена (пустое или не пустое)
-const getPriceOptionErrorMessage = () =>
-  priceElement.value
+
+const validatePriceFill = () => priceElement.value;
+
+const getPriceOptionErrorMessage = () => {
+  return priceElement.value
     ? `Минимальное значение для типа жилья "${offerTypeValue[offerTypeElement.value]}" — ${
         offerTypeOption[offerTypeElement.value]
       }`
     : 'Заполните поле Цена за ночь, руб.';
-
-capacityFieldElement.addEventListener('change', () => {
-  pristine.validate([capacityFieldElement, roomFieldElement]);
-});
-
-roomFieldElement.addEventListener('change', () => {
-  pristine.validate([capacityFieldElement, roomFieldElement]);
-});
+};
+const syncValidCapacityRoom = () => pristine.validate([capacityFieldElement, roomFieldElement]);
+capacityFieldElement.addEventListener('change', syncValidCapacityRoom);
+roomFieldElement.addEventListener('change', syncValidCapacityRoom);
 
 pristine.addValidator(roomFieldElement, validateRoom, getRoomOptionErrorMessage);
 pristine.addValidator(capacityFieldElement, validateRoom, getRoomOptionErrorMessage);
 
 pristine.addValidator(priceElement, validatePrice, getPriceOptionErrorMessage);
-pristine.addValidator(offerTypeElement, validateIsNullPrice, getPriceOptionErrorMessage);
+pristine.addValidator(offerTypeElement, validatePriceFill, getPriceOptionErrorMessage);
 
 const setBlockSubmitButton = () => {
-  // 1 пункт замечаний по ТЗ, сюда нужно добавить навешивание класса дизейбл
   submitButtonElement.disabled = true;
+  submitButtonElement.classList.add('ad-form__submit--disabled');
   submitButtonElement.textContent = 'Данные отправляются...';
 };
 
 const setUnblockSubmitButton = () => {
   submitButtonElement.disabled = false;
+  submitButtonElement.classList.remove('ad-form__submit--disabled');
   submitButtonElement.textContent = 'Опубликовать';
 };
 
-//функции для отправки данных
-const onSuccessSendData = () => {
-  createSuccessMessage();
-  setUnblockSubmitButton();
-  //после успешной отправки сбрасываем данные в форме и на карте
-  // Д14 этот код повторяется в обработчик "очистить", и если бы не повторялся,
-  // все равно желательно смысловые блоки выносить в отдельную функцию, в данном случаи 5 стро относится
-  // к сбросу
+const setResetElements = () => {
   formElement.reset();
   restFormImg();
   restMarkers();
   mapFiltersElement.reset();
+  pristine.reset();
+  sliderPriceElement.noUiSlider.reset();
+};
+
+const onSuccessSendData = () => {
+  createSuccessMessage();
+  setUnblockSubmitButton();
+  setResetElements();
 };
 const onErrorSendData = () => {
   createErrMessage();
@@ -157,14 +145,9 @@ const setUserFormSubmit = () => {
   });
 };
 
-//Обрабатываем кнопку "Очистить"
 restButtonElement.addEventListener('click', (evt) => {
   evt.preventDefault();
-  formElement.reset();
-  restFormImg();
-  restMarkers();
-  mapFiltersElement.reset();
-  pristine.reset();
+  setResetElements();
 });
 
 export { setUserFormSubmit };
