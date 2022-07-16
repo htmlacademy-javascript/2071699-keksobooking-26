@@ -76,7 +76,7 @@ const onErrorButtonClick = (formContainer) => {
 const onPopupEscKeydown = (formContainer) => {
   window.addEventListener(
     'keydown',
-    function (evt) {
+    (evt) => {
       const key = evt.key;
       if (key === 'Escape') {
         formContainer.remove();
@@ -89,7 +89,7 @@ const onPopupEscKeydown = (formContainer) => {
 const onPopupMouseClick = (formContainer) => {
   document.addEventListener(
     'click',
-    function () {
+    () => {
       formContainer.remove();
     },
     { once: true },

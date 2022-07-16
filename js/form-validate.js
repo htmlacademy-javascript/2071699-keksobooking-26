@@ -86,13 +86,13 @@ const validatePrice = () => priceElement.value >= offerTypeOption[offerTypeEleme
 
 const validatePriceFill = () => priceElement.value;
 
-const getPriceOptionErrorMessage = () => {
-  return priceElement.value
+const getPriceOptionErrorMessage = () =>
+  priceElement.value
     ? `Минимальное значение для типа жилья "${offerTypeValue[offerTypeElement.value]}" — ${
-        offerTypeOption[offerTypeElement.value]
-      }`
+      offerTypeOption[offerTypeElement.value]
+    }`
     : 'Заполните поле Цена за ночь, руб.';
-};
+
 const syncValidCapacityRoom = () => pristine.validate([capacityFieldElement, roomFieldElement]);
 capacityFieldElement.addEventListener('change', syncValidCapacityRoom);
 roomFieldElement.addEventListener('change', syncValidCapacityRoom);

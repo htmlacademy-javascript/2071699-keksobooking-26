@@ -11,9 +11,8 @@ const guestsFilterElement = mapFiltersElement.querySelector('[name="housing-gues
 const featuresFilterArrays = [];
 const featuresCheckboxes = mapFiltersElement.querySelectorAll('input[type=checkbox]');
 
-const checkTypeFilter = (offer) => {
-  return offer.type === typeFilterElement.value || typeFilterElement.value === 'any';
-};
+const checkTypeFilter = (offer) =>
+  offer.type === typeFilterElement.value || typeFilterElement.value === 'any';
 
 const checkPriceFilter = (offer) => {
   const priceAdvert = offer.price;
@@ -32,13 +31,11 @@ const checkPriceFilter = (offer) => {
   }
 };
 
-const checkRoomsFilter = (offer) => {
-  return offer.rooms === Number(roomsFilterElement.value) || roomsFilterElement.value === 'any';
-};
+const checkRoomsFilter = (offer) =>
+  offer.rooms === Number(roomsFilterElement.value) || roomsFilterElement.value === 'any';
 
-const checkGuestsFilter = (offer) => {
-  return offer.guests === Number(guestsFilterElement.value) || guestsFilterElement.value === 'any';
-};
+const checkGuestsFilter = (offer) =>
+  offer.guests === Number(guestsFilterElement.value) || guestsFilterElement.value === 'any';
 
 const checkFeaturesFilter = (offer) => {
   //Если есть выбранные checkbox, то проверяем, что в обявлениях есть такие же
@@ -60,15 +57,12 @@ const checkFeaturesFilter = (offer) => {
 };
 
 //объявление должно удовлетворять всем фильтрам
-const getAdvertFilter = (advert) => {
-  return (
-    checkTypeFilter(advert.offer) &&
-    checkPriceFilter(advert.offer) &&
-    checkRoomsFilter(advert.offer) &&
-    checkGuestsFilter(advert.offer) &&
-    checkFeaturesFilter(advert.offer)
-  );
-};
+const getAdvertFilter = (advert) =>
+  checkTypeFilter(advert.offer) &&
+  checkPriceFilter(advert.offer) &&
+  checkRoomsFilter(advert.offer) &&
+  checkGuestsFilter(advert.offer) &&
+  checkFeaturesFilter(advert.offer);
 
 export {
   mapFiltersElement,
