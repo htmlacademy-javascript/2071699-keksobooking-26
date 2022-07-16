@@ -1,4 +1,4 @@
-const offerTypeValue = {
+const offerValue = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
   house: 'Дом',
@@ -19,7 +19,7 @@ const createCustomPopup = ({ offer, author }) => {
     ? `${offer.price} ₽/ночь`
     : '';
 
-  advertElement.querySelector('.popup__type').textContent = offerTypeValue[offer.type];
+  advertElement.querySelector('.popup__type').textContent = offerValue[offer.type];
 
   advertElement.querySelector('.popup__text--capacity').textContent =
     offer.rooms && offer.guests ? `${offer.rooms} комнаты для ${offer.guests}  гостей` : '';
@@ -76,7 +76,7 @@ const onErrorButtonClick = (formContainer) => {
 const onPopupEscKeydown = (formContainer) => {
   window.addEventListener(
     'keydown',
-    function (evt) {
+    (evt) => {
       const key = evt.key;
       if (key === 'Escape') {
         formContainer.remove();
@@ -89,7 +89,7 @@ const onPopupEscKeydown = (formContainer) => {
 const onPopupMouseClick = (formContainer) => {
   document.addEventListener(
     'click',
-    function () {
+    () => {
       formContainer.remove();
     },
     { once: true },
@@ -118,4 +118,4 @@ const createSuccessMessage = () => {
   onPopupMouseClick(successElement);
 };
 
-export { offerTypeValue, createCustomPopup, createErrMessage, createSuccessMessage };
+export { offerValue, createCustomPopup, createErrMessage, createSuccessMessage };
