@@ -1,4 +1,4 @@
-const offerTypeValue = {
+const offerValue = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
   house: 'Дом',
@@ -19,7 +19,7 @@ const createCustomPopup = ({ offer, author }) => {
     ? `${offer.price} ₽/ночь`
     : '';
 
-  advertElement.querySelector('.popup__type').textContent = offerTypeValue[offer.type];
+  advertElement.querySelector('.popup__type').textContent = offerValue[offer.type];
 
   advertElement.querySelector('.popup__text--capacity').textContent =
     offer.rooms && offer.guests ? `${offer.rooms} комнаты для ${offer.guests}  гостей` : '';
@@ -118,4 +118,4 @@ const createSuccessMessage = () => {
   onPopupMouseClick(successElement);
 };
 
-export { offerTypeValue, createCustomPopup, createErrMessage, createSuccessMessage };
+export { offerValue, createCustomPopup, createErrMessage, createSuccessMessage };

@@ -1,5 +1,5 @@
 import { formElement } from './form-status.js';
-import { offerTypeValue, createErrMessage, createSuccessMessage } from './card.js';
+import { offerValue, createErrMessage, createSuccessMessage } from './card.js';
 import { sendData } from './fetch-data.js';
 import { restMarkers } from './map.js';
 import { restFormImg } from './photo-load.js';
@@ -11,7 +11,7 @@ const ROOM_OPTION = {
   '3 комнаты': ['для 3 гостей', 'для 2 гостей', 'для 1 гостя'],
   '100 комнат': ['не для гостей'],
 };
-const offerTypeOption = {
+const offerOption = {
   flat: 1000,
   bungalow: 0,
   house: 5000,
@@ -22,7 +22,7 @@ const offerTypeOption = {
 const roomFieldElement = formElement.querySelector('[name="rooms"]');
 const capacityFieldElement = formElement.querySelector('[name="capacity"]');
 
-const offerTypeElement = formElement.querySelector('[name="type"]');
+const offerElement = formElement.querySelector('[name="type"]');
 const priceElement = formElement.querySelector('[name="price"]');
 const sliderPriceElement = document.querySelector('.ad-form__slider');
 
@@ -60,11 +60,11 @@ const getRoomOptionErrorMessage = () =>
     roomFieldElement[roomFieldElement.selectedIndex].text
   ].join(' или ')}`;
 
-const syncValidPriceOfferType = () => pristine.validate([priceElement, offerTypeElement]);
+const syncValidPriceOfferType = () => pristine.validate([priceElement, offerElement]);
 
 const changePropertyPriceElement = () => {
-  priceElement.placeholder = offerTypeOption[offerTypeElement.value];
-  priceElement.min = offerTypeOption[offerTypeElement.value];
+  priceElement.placeholder = offerOption[offerElement.value];
+  priceElement.min = offerOption[offerElement.value];
   syncValidPriceOfferType();
 };
 
@@ -73,7 +73,7 @@ const changePriceBySlider = () => {
   syncValidPriceOfferType();
 };
 
-offerTypeElement.addEventListener('change', changePropertyPriceElement);
+offerElement.addEventListener('change', changePropertyPriceElement);
 priceElement.addEventListener('change', syncValidPriceOfferType);
 sliderPriceElement.noUiSlider.on('update', changePriceBySlider);
 
@@ -82,15 +82,13 @@ const syncTimeInOut = () => (timeinElement.value = timeoutElement.value);
 timeinElement.addEventListener('change', syncTimeOutIn);
 timeoutElement.addEventListener('change', syncTimeInOut);
 
-const validatePrice = () => priceElement.value >= offerTypeOption[offerTypeElement.value];
+const validatePrice = () => priceElement.value >= offerOption[offerElement.value];
 
 const validatePriceFill = () => priceElement.value;
 
 const getPriceOptionErrorMessage = () =>
   priceElement.value
-    ? `Минимальное значение для типа жилья "${offerTypeValue[offerTypeElement.value]}" — ${
-      offerTypeOption[offerTypeElement.value]
-    }`
+    ? `Для типа "${offerValue[offerElement.value]}" цена выше  ${offerOption[offerElement.value]}`
     : 'Заполните поле Цена за ночь, руб.';
 
 const syncValidCapacityRoom = () => pristine.validate([capacityFieldElement, roomFieldElement]);
@@ -101,7 +99,7 @@ pristine.addValidator(roomFieldElement, validateRoom, getRoomOptionErrorMessage)
 pristine.addValidator(capacityFieldElement, validateRoom, getRoomOptionErrorMessage);
 
 pristine.addValidator(priceElement, validatePrice, getPriceOptionErrorMessage);
-pristine.addValidator(offerTypeElement, validatePriceFill, getPriceOptionErrorMessage);
+pristine.addValidator(offerElement, validatePriceFill, getPriceOptionErrorMessage);
 
 const setBlockSubmitButton = () => {
   submitButtonElement.disabled = true;
