@@ -6,6 +6,9 @@ const avatarPreview = document.querySelector('.ad-form-header__preview img');
 const houseChooser = document.querySelector('.ad-form__upload input[type=file]');
 const housePreview = document.querySelector('.ad-form__photo');
 
+const houseImg = document.createElement('img', { alt: 'Фотография жилья' });
+housePreview.appendChild(houseImg);
+
 avatarChooser.addEventListener('change', () => {
   const avatarFile = avatarChooser.files[0];
   const avatarFileName = avatarFile.name.toLowerCase();
@@ -22,17 +25,13 @@ houseChooser.addEventListener('change', () => {
 
   const matches = FILE_TYPES.some((it) => houseFileName.endsWith(it));
   if (matches) {
-    housePreview.innerHTML = `<img src="${URL.createObjectURL(
-      houseFile,
-    )}" alt="Фотография жилья" />`;
+    houseImg.src = URL.createObjectURL(houseFile);
   }
 });
 
 const restFormImg = () => {
   avatarPreview.src = DEFAULT_AVATAR;
-  if (housePreview.querySelector('img')) {
-    housePreview.querySelector('img').remove();
-  }
+  houseImg.src = '';
 };
 
 export { restFormImg };
