@@ -22,6 +22,7 @@ import { state } from './data.js';
 
 const ADVERTS_COUNT = 10;
 const RERENDER_DELAY = 500;
+const MAP_ZOOM = 12;
 const locationTokyo = {
   lat: 35.6895,
   lng: 139.692,
@@ -38,7 +39,7 @@ const map = L.map('map-canvas')
     setFormActive(mapFormElement, CLASS_NAME_DISABLED_MAP, mapFiltersElement);
     setAddressDefault();
   })
-  .setView(locationTokyo, 12);
+  .setView(locationTokyo, MAP_ZOOM);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution:
@@ -73,9 +74,16 @@ const customPinIcon = L.icon({
 const markerGroup = L.layerGroup().addTo(map);
 
 const createMarker = () => {
-  const filterAdverts = state.adverts
-    .filter((advert) => getAdvertFilter(advert))
-    .slice(0, ADVERTS_COUNT);
+  const filterAdverts = [];
+  for (const advert of state.adverts) {
+    if (filterAdverts.length >= ADVERTS_COUNT) {
+      break;
+    }
+
+    if (getAdvertFilter(advert)) {
+      filterAdverts.push(advert);
+    }
+  }
 
   filterAdverts.forEach(({ location, offer, author }) => {
     const marker = L.marker(
@@ -90,24 +98,25 @@ const createMarker = () => {
     marker.addTo(markerGroup).bindPopup(createCustomPopup({ offer, author }));
   });
 };
-//сброс карты
-const clearMap = () => {
-  markerGroup.clearLayers();
-  mainPinMarker.setLatLng(locationTokyo);
-  map.setView(locationTokyo, 12);
-};
 
 const createMarkerWithDebounce = debounce(() => createMarker(state.adverts), RERENDER_DELAY);
 
-const updateMap = () => {
-  clearMap();
+const updateMapMarker = () => {
+  markerGroup.clearLayers();
   createMarkerWithDebounce();
 };
 
-typeFilterElement.addEventListener('change', updateMap);
-priceFilterElement.addEventListener('change', updateMap);
-roomsFilterElement.addEventListener('change', updateMap);
-guestsFilterElement.addEventListener('change', updateMap);
+//сброс карты
+const updateMap = () => {
+  mainPinMarker.setLatLng(locationTokyo);
+  map.setView(locationTokyo, MAP_ZOOM);
+  updateMapMarker();
+};
+
+typeFilterElement.addEventListener('change', updateMapMarker);
+priceFilterElement.addEventListener('change', updateMapMarker);
+roomsFilterElement.addEventListener('change', updateMapMarker);
+guestsFilterElement.addEventListener('change', updateMapMarker);
 featuresCheckboxes.forEach((item) =>
   item.addEventListener('change', () => {
     if (item.checked) {
@@ -115,13 +124,11 @@ featuresCheckboxes.forEach((item) =>
     } else {
       featuresFilterArrays.splice(featuresFilterArrays.indexOf(item.value, 0), 1);
     }
-    updateMap();
+    updateMapMarker();
   }),
 );
 
 const restMarkers = () => {
-  mainPinMarker.setLatLng(locationTokyo);
-  map.setView(locationTokyo, 12);
   setAddressDefault();
   updateMap();
 };

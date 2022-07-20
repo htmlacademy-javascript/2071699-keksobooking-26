@@ -60,27 +60,27 @@ const getRoomOptionErrorMessage = () =>
     roomFieldElement[roomFieldElement.selectedIndex].text
   ].join(' или ')}`;
 
-const syncValidPriceOfferType = () => pristine.validate([priceElement, offerElement]);
+const onSyncValidPriceOfferType = () => pristine.validate([priceElement, offerElement]);
 
-const changePropertyPriceElement = () => {
+const onChangePropertyPriceElement = () => {
   priceElement.placeholder = offerOption[offerElement.value];
   priceElement.min = offerOption[offerElement.value];
-  syncValidPriceOfferType();
+  onSyncValidPriceOfferType();
 };
 
-const changePriceBySlider = () => {
+const onChangePriceBySlider = () => {
   priceElement.value = sliderPriceElement.noUiSlider.get();
-  syncValidPriceOfferType();
+  onSyncValidPriceOfferType();
 };
 
-offerElement.addEventListener('change', changePropertyPriceElement);
-priceElement.addEventListener('change', syncValidPriceOfferType);
-sliderPriceElement.noUiSlider.on('update', changePriceBySlider);
+offerElement.addEventListener('change', onChangePropertyPriceElement);
+priceElement.addEventListener('change', onSyncValidPriceOfferType);
+sliderPriceElement.noUiSlider.on('update', onChangePriceBySlider);
 
-const syncTimeOutIn = () => (timeoutElement.value = timeinElement.value);
-const syncTimeInOut = () => (timeinElement.value = timeoutElement.value);
-timeinElement.addEventListener('change', syncTimeOutIn);
-timeoutElement.addEventListener('change', syncTimeInOut);
+const onSyncTimeOutIn = () => (timeoutElement.value = timeinElement.value);
+const onSyncTimeInOut = () => (timeinElement.value = timeoutElement.value);
+timeinElement.addEventListener('change', onSyncTimeOutIn);
+timeoutElement.addEventListener('change', onSyncTimeInOut);
 
 const validatePrice = () => priceElement.value >= offerOption[offerElement.value];
 
@@ -91,9 +91,9 @@ const getPriceOptionErrorMessage = () =>
     ? `Для типа "${offerValue[offerElement.value]}" цена выше  ${offerOption[offerElement.value]}`
     : 'Заполните поле Цена за ночь, руб.';
 
-const syncValidCapacityRoom = () => pristine.validate([capacityFieldElement, roomFieldElement]);
-capacityFieldElement.addEventListener('change', syncValidCapacityRoom);
-roomFieldElement.addEventListener('change', syncValidCapacityRoom);
+const onSyncValidCapacityRoom = () => pristine.validate([capacityFieldElement, roomFieldElement]);
+capacityFieldElement.addEventListener('change', onSyncValidCapacityRoom);
+roomFieldElement.addEventListener('change', onSyncValidCapacityRoom);
 
 pristine.addValidator(roomFieldElement, validateRoom, getRoomOptionErrorMessage);
 pristine.addValidator(capacityFieldElement, validateRoom, getRoomOptionErrorMessage);
